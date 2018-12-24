@@ -1,0 +1,33 @@
+{
+  "scripts": {
+    "start": "cross-env NODE_ENV=dev poi src/index.js",
+    "build": "cross-env NODE_ENV=prod poi build src/index.js"
+  },
+  "dependencies": {
+    "@coreui/vue": "^2.0.2",
+    "@types/p-queue": "^2.3.1",
+    "axios": "^0.18.0",
+    "dayjs": "^1.7.7",
+    "iview": "^3.1.5",
+    "lodash": "^4.17.11",
+    "p-queue": "^3.0.0",
+    "store2": "^2.7.0",
+    "vue": "^2.5.17",
+    "vue-json-ui-editor": "^0.9.0",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.1.0",
+    "babel-plugin-import": "^1.11.0",
+    "babel-preset-poi": "^10.0.2",
+    "cross-env": "^5.2.0",
+    "iview-loader": "^1.2.2",
+    "poi": "^10.2.10",
+    "pug": "^2.0.3",
+    "pug-loader": "^2.4.0",
+    "pug-plain-loader": "^1.0.0",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2"
+  }
+}
