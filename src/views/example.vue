@@ -10,9 +10,17 @@ import { request, mapVars, mapObjs } from "../utils";
 
 export default {
   computed: {
-    ...mapVars(["types"]),
-    schema() {
-      return {
+    ...mapVars(["types"])
+  },
+  methods: {
+    Event(data) {
+      console.log(data);
+    }
+  },
+  data() {
+    return {
+      formData: {},
+      schema: {
         Enum: {
           type: "Enum",
           label: "Enum",
@@ -49,17 +57,7 @@ export default {
           type: "Event",
           label: "Submit"
         }
-      };
-    }
-  },
-  methods: {
-    Event(data) {
-      console.log(data);
-    }
-  },
-  data() {
-    return {
-      formData: {}
+      }
     };
   }
 };
