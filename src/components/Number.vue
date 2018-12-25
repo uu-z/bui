@@ -22,13 +22,13 @@ export default {
     label: String,
     name: String,
     min: {
-      type: Number
+      type: [Number, String]
     },
     max: {
-      type: Number
+      type: [Number, String]
     },
     step: {
-      type: Number,
+      type: [Number, String],
       default: 0
     },
     value: {

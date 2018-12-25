@@ -1,7 +1,7 @@
 <template lang="pug">
   .example
     ObjectBuilder.builder(:schema.sync="example.schema")
-    Object.object(:schema.sync="example.schema" :value.sync="formData" @event="Event")
+    Object.object(:schema.sync="example.schema" :value.sync="value" @event="Event")
 </template>
 
 <script>
@@ -19,10 +19,10 @@ export default {
   },
   data() {
     return {
-      formData: {},
+      value: {},
       example: {
         schema: {
-          Test: {
+          Object: {
             type: "Object",
             schema: {
               Enum: {
