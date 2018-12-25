@@ -1,25 +1,26 @@
 <template lang="pug">
   .object-builder
-    .field-context
-      v-contextmenu(ref="contextmenu")
-        v-contextmenu-item(@click="removeField") 删除
-    .field-list(v-contextmenu:contextmenu)
-      FieldBuilder(
-        :key="name"
-        v-for="(field, name) in schema"
-        v-bind="parseOption(name, field)"
-        @remove="removeField(name)"
-        @click:label="handleClickLabel(name)"
-        @input="updateForm(name, $event)")
-      .add
-        input(v-model="newField.name")
-        Enum(v-model="newField.type" :enums="types")
-        button(@click="addNewField") +
-    .field-detail
-      component(
-        v-if="currentField"
-        :is="currentField.type + 'Builder'"
-        :value.sync="currentField")
+    .add
+      input(v-model="newField.name")
+      Enum(v-model="newField.type" :enums="types")
+      button(@click="addNewField") +
+    .filed-builder
+      .field-context
+        v-contextmenu(ref="contextmenu")
+          v-contextmenu-item(@click="removeField") 删除
+      .field-list(v-contextmenu:contextmenu)
+        FieldBuilder(
+          :key="name"
+          v-for="(field, name) in schema"
+          v-bind="parseOption(name, field)"
+          @remove="removeField(name)"
+          @click:label="handleClickLabel(name)"
+          @input="updateForm(name, $event)")
+      .field-detail
+        component(
+          v-if="currentField"
+          :is="currentField.type + 'Builder'"
+          :value.sync="currentField")
 </template>
 
 
@@ -86,7 +87,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.object-builder {
+.filed-builder {
   display: flex;
 }
 

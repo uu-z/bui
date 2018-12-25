@@ -27,6 +27,11 @@ export default {
           label: "Type",
           enums: this.types
         },
+        default: {
+          type: "Enum",
+          label: "Default",
+          enums: this.value.enums
+        },
         enums: {
           type: "String",
           label: "Enums",

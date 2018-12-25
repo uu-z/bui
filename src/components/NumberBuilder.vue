@@ -27,6 +27,10 @@ export default {
           label: "Type",
           enums: this.types
         },
+        default: {
+          type: "Number",
+          label: "Default"
+        },
         step: {
           type: "String",
           label: "Step",

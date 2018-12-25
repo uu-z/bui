@@ -4,15 +4,27 @@
     input(
       type="checkbox"
       :name="name"
-      :value="value"
-      @input="$emit('input', !value)"
+      v-model="selected"
+      @input="$emit('input', selected)"
       )
 </template>
 
 <script>
 export default {
   name: "Bool",
-  props: ["name", "label", "value"]
+  data() {
+    return {
+      selected: this.value
+    };
+  },
+  props: {
+    name: String,
+    label: String,
+    value: {
+      type: Boolean,
+      default: false
+    }
+  }
 };
 </script>
 

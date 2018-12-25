@@ -9,6 +9,49 @@ import _ from "lodash";
 import { request, mapVars, mapObjs } from "../utils";
 
 export default {
+  computed: {
+    ...mapVars(["types"]),
+    schema() {
+      return {
+        Enum: {
+          type: "Enum",
+          label: "Enum",
+          default: "Foo",
+          enums: ["Foo", "Bar"]
+        },
+        String: {
+          type: "String",
+          placeholder: "placeholder",
+          default: "Hello World!",
+          label: "String"
+        },
+        Int: {
+          type: "Number",
+          label: "Int",
+          default: 23,
+          min: 0,
+          max: 100
+        },
+        Float: {
+          type: "Number",
+          label: "Float",
+          default: 23.33,
+          step: 0.01,
+          min: 0,
+          max: 100
+        },
+        Bool: {
+          type: "Bool",
+          label: "Bool",
+          default: true
+        },
+        Event: {
+          type: "Event",
+          label: "Submit"
+        }
+      };
+    }
+  },
   methods: {
     Event(data) {
       console.log(data);
@@ -16,41 +59,7 @@ export default {
   },
   data() {
     return {
-      formData: {},
-      schema: {
-        Enum: {
-          type: "Enum",
-          label: "Enum",
-          value: "Foo",
-          enums: ["Foo", "Bar"]
-        },
-        String: {
-          type: "String",
-          placeholder: "placeholder",
-          label: "String"
-        },
-        Int: {
-          type: "Number",
-          label: "Int",
-          min: 0,
-          max: 100
-        },
-        Float: {
-          type: "Number",
-          label: "Float",
-          step: 0.01,
-          min: 0,
-          max: 100
-        },
-        Bool: {
-          type: "Bool",
-          label: "Bool"
-        },
-        Event: {
-          type: "Event",
-          label: "Submit"
-        }
-      }
+      formData: {}
     };
   }
 };

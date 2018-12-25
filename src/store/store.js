@@ -5,6 +5,7 @@ import config from "../config";
 
 const state = {
   ...config,
+  events: ["Hello"],
   types: ["String", "Enum", "Number", "Bool", "Event"]
 };
 
