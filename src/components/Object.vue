@@ -7,6 +7,7 @@
         :name="name"
         :is="field.type"
         :value.sync="value[name] || field.default"
+        :style="field.style"
         v-for="(field, name) in schema"
         v-bind="field"
         @input="updateForm(name, $event)"

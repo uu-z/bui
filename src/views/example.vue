@@ -77,13 +77,10 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.example {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  .builder {
-    margin: 2vw;
-  }
-}
+.example
+  display flex
+  flex-direction column
+  align-items center
+  .builder
+    margin 2vw
 </style>

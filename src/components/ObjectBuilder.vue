@@ -9,8 +9,9 @@
         v-contextmenu(ref="contextmenu")
           v-contextmenu-item(@click="removeField") 删除
       .field-list(v-contextmenu:contextmenu)
-        FieldBuilder(
+        FieldBuilder.field-builder(
           :key="name"
+          :class="{active: currentFieldName == name}"
           v-for="(field, name) in schema"
           v-bind="parseOption(name, field)"
           @remove="removeField(name)"
@@ -101,11 +102,10 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.filed-builder {
-  display: flex;
-}
-
-.add {
-  display: flex;
-}
+.filed-builder
+  display flex
+  .active
+    background rgb(211, 211, 211)
+.add
+  display flex
 </style>
