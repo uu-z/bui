@@ -25,7 +25,7 @@
         component(
           v-if="currentField.type !== 'Object'"
           :is="currentField.type + 'Builder'"
-          :value.sync="currentField")
+          :value="currentField")
 </template>
 
 

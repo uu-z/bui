@@ -1,7 +1,7 @@
 <template lang="pug">
   .example
     ObjectBuilder.builder(:schema.sync="example.schema")
-    Object.object(:schema.sync="example.schema" :value.sync="value" @event="Event")
+    Object.object(:key="key" :schema.sync="example.schema" :value.sync="value" @event="Event")
 </template>
 
 <script>
@@ -14,11 +14,15 @@ export default {
   },
   methods: {
     Event(data) {
+      if (data.callback) {
+        data.callback();
+      }
       console.log(data);
     }
   },
   data() {
     return {
+      key: Math.random(),
       value: {},
       example: {
         schema: {
@@ -48,9 +52,7 @@ export default {
           Int: {
             type: "Number",
             label: "Int",
-            default: 23,
-            min: 0,
-            max: 100
+            default: 23
           },
           Float: {
             type: "Number",
@@ -65,9 +67,13 @@ export default {
             label: "Bool",
             default: true
           },
-          Event: {
+          Reload: {
             type: "Event",
-            label: "Submit"
+            label: "Reload",
+            callback: () => {
+              this.key = Math.random();
+              this.value = {};
+            }
           }
         }
       }

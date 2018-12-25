@@ -1,6 +1,6 @@
 <template lang="pug">
   .route
-    Object(:schema="schema" :value.sync="value")
+    Object(:schema="schema" :value="value")
 </template>
 
 <script>

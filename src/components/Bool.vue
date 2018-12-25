@@ -2,6 +2,7 @@
   div
     label(@click="$emit('click:label')") {{label || name}}
     input(
+      ref="Bool"
       type="checkbox"
       :name="name"
       :checked="value"
@@ -14,6 +15,9 @@
 <script>
 export default {
   name: "Bool",
+  mounted() {
+    this.$emit("input", this.value);
+  },
   data() {
     return {
       selected: this.value

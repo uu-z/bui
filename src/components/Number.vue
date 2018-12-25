@@ -15,20 +15,23 @@
 <script>
 export default {
   name: "Number",
-  data() {
-    return {};
+  mounted() {
+    this.$emit("input", this.value);
   },
   props: {
     label: String,
     name: String,
     min: {
-      type: [Number, String]
+      type: [Number, String],
+      default: 0
     },
     max: {
-      type: [Number, String]
+      type: [Number, String],
+      default: 100
     },
     step: {
-      type: [Number, String]
+      type: [Number, String],
+      default: 0
     },
     value: {
       type: Number

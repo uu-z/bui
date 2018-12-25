@@ -17,6 +17,8 @@
 
 
 <script>
+import _ from "lodash";
+
 export default {
   name: "Object",
   props: {
@@ -41,12 +43,19 @@ export default {
     };
   },
   methods: {
+    getDefaults(schema) {
+      let cache = {};
+      _.each(schema, (v, k) => {
+        if (v.type == "Object") {
+          cache[k] = _.get(this.value, k) || this.getDefaults(v.schema);
+        } else {
+          cache[k] = _.get(this.value, k) || v.default;
+        }
+      });
+      return cache;
+    },
     updateForm(fieldname, value) {
       const { format } = this.schema[fieldname];
-      if (format) {
-        value = format(value);
-      }
-
       if (typeof this.value !== "object") {
         this.$emit("input", { [fieldname]: value });
       } else {
@@ -63,10 +72,6 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.object-label {
-}
-
-.object-fields {
-  margin-left: 20px;
-}
+.object-fields
+  margin-left 20px
 </style>

@@ -14,7 +14,10 @@
 <script>
 export default {
   name: "Enum",
-  props: ["enums", "name", "label", "value"]
+  props: ["enums", "name", "label", "value"],
+  mounted() {
+    this.$emit("input", this.value);
+  }
 };
 </script>
 

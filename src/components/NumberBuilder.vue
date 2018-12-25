@@ -34,17 +34,17 @@ export default {
         step: {
           type: "String",
           label: "Step",
-          default: 0
+          default: "0"
         },
         min: {
           type: "String",
           label: "Min",
-          default: 0
+          default: "0"
         },
         max: {
           type: "String",
           label: "Max",
-          default: 100
+          default: "100"
         }
       };
     }
