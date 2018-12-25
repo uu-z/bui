@@ -7,6 +7,7 @@
       :value="value"
       :min="min"
       :max="max"
+      :step="step"
       @input="$emit('input', $event.target.value)")
     label {{value}}
 </template>
@@ -14,6 +15,9 @@
 <script>
 export default {
   name: "Number",
+  data() {
+    return {};
+  },
   props: {
     label: String,
     name: String,
@@ -24,6 +28,10 @@ export default {
     max: {
       type: Number,
       default: 100
+    },
+    step: {
+      type: Number,
+      default: 0
     },
     value: {
       type: String

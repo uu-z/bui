@@ -5,7 +5,7 @@
         :key="name"
         v-for="(field, name) in schema"
         is="Enum"
-        v-bind="parseOption(field)"
+        v-bind="parseOption(name, field)"
         @click:label="handleClickLabel(name)"
         @input="updateForm(name, $event)")
       .add
@@ -35,9 +35,17 @@ export default {
       }
     };
   },
+  mounted() {
+    _.each(this.schema, (v, k) => {
+      if (!v.name) {
+        this.$set(this.schema[k], "name", k);
+      }
+    });
+  },
   computed: {
     currentField() {
-      return this.schema[this.currentFieldName];
+      const currentField = this.schema[this.currentFieldName];
+      return currentField;
     },
     ...mapVars(["types"])
   },
@@ -56,9 +64,10 @@ export default {
       this.$set(this.schema, this.newField.name, this.newField);
       this.resetNewField();
     },
-    parseOption(field) {
+    parseOption(name, field) {
       return {
         ...field,
+        name,
         value: field.type,
         enums: this.types
       };

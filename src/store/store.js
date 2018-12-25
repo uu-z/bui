@@ -5,7 +5,7 @@ import config from "../config";
 
 const state = {
   ...config,
-  types: ["String", "Enum", "Number", "Event"]
+  types: ["String", "Enum", "Number", "Bool", "Event"]
 };
 
 const mutations = {

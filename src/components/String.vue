@@ -5,6 +5,7 @@
       type="text"
       :name="name"
       :value="value"
+      :disabled="disabled"
       :placeholder="placeholder"
       @input="$emit('input', $event.target.value)"
       )
@@ -13,7 +14,7 @@
 <script>
 export default {
   name: "String",
-  props: ["placeholder", "label", "name", "value"]
+  props: ["placeholder", "disabled", "label", "name", "value"]
 };
 </script>
 

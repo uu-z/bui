@@ -13,6 +13,11 @@ export default {
     ...mapVars(["types"]),
     schema() {
       return {
+        name: {
+          type: "String",
+          disabled: true,
+          label: "Name"
+        },
         label: {
           type: "String",
           label: "Label"

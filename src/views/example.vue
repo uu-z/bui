@@ -21,19 +21,30 @@ export default {
         Enum: {
           type: "Enum",
           label: "Enum",
+          value: "Foo",
           enums: ["Foo", "Bar"]
         },
         String: {
           type: "String",
           placeholder: "placeholder",
-          label: "Last Name"
+          label: "String"
         },
-        Number: {
+        Int: {
           type: "Number",
-          placeholder: "Age",
-          label: "Age",
+          label: "Int",
           min: 0,
           max: 100
+        },
+        Float: {
+          type: "Number",
+          label: "Float",
+          step: 0.01,
+          min: 0,
+          max: 100
+        },
+        Bool: {
+          type: "Bool",
+          label: "Bool"
         },
         Event: {
           type: "Event",

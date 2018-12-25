@@ -14,7 +14,7 @@
 <script>
 export default {
   name: "Enum",
-  props: ["multi", "enums", "name", "label", "value"]
+  props: ["enums", "name", "label", "value"]
 };
 </script>
 
