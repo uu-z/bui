@@ -15,10 +15,14 @@
           v-bind="parseOption(name, field)"
           @remove="removeField(name)"
           @click:label="handleClickLabel(name)"
-          @input="updateForm(name, $event)")
-      .field-detail
+          @input="updateFieldType(name, $event)")
+      .field-detail(v-if="currentField")
+        ObjectBuilder.builder(
+          @input="updateFieldType(name, $event)"
+          v-if="currentField.type == 'Object'"
+          :schema.sync="currentField.schema")
         component(
-          v-if="currentField"
+          v-if="currentField.type !== 'Object'"
           :is="currentField.type + 'Builder'"
           :value.sync="currentField")
 </template>
@@ -29,7 +33,11 @@ import { request, mapVars, mapObjs } from "../utils";
 
 export default {
   name: "ObjectBuilder",
-  props: ["schema"],
+  props: {
+    schema: {
+      type: Object
+    }
+  },
   data() {
     return {
       currentFieldName: "",
@@ -39,7 +47,7 @@ export default {
       }
     };
   },
-  mounted() {
+  beforeMount() {
     _.each(this.schema, (v, k) => {
       if (!v.name) {
         this.$set(this.schema[k], "name", k);
@@ -68,6 +76,9 @@ export default {
     },
     addNewField() {
       if (!this.newField.name) return;
+      // if (this.newField.type == "Object") {
+      //   this.newField.schema = {};
+      // }
       this.$set(this.schema, this.newField.name, this.newField);
       this.resetNewField();
     },
@@ -79,8 +90,14 @@ export default {
         enums: this.types
       };
     },
-    updateForm(name, value) {
-      this.$set(this.schema[name], `type`, value);
+    updateFieldType(name, type) {
+      const target = this.schema[name];
+      if (type == "Object") {
+        if (!target.schema) {
+          this.$set(this.schema[name], "schema", {});
+        }
+      }
+      this.$set(this.schema[name], "type", type);
     }
   }
 };

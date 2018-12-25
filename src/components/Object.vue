@@ -1,24 +1,42 @@
 <template lang="pug">
   .object
-    component(
-      :key="name"
-      :name="name"
-      :is="field.type"
-      :value="value[name] || field.default"
-      v-for="(field, name) in schema"
-      v-bind="field"
-      @input="updateForm(name, $event)"
-      @click="updateEvent(name, $event)"
-      )
+    label.object-label(@click="$emit('click:label')") {{label || name}}
+    .object-fields
+      component(
+        :key="name"
+        :name="name"
+        :is="field.type"
+        :value="value[name] || field.default"
+        v-for="(field, name) in schema"
+        v-bind="field"
+        @input="updateForm(name, $event)"
+        @click="updateEvent(name, $event)"
+        )
 </template>
 
 
 <script>
 export default {
   name: "Object",
-  props: ["schema", "value"],
+  props: {
+    name: String,
+    label: String,
+    schema: {
+      type: Object,
+      default() {
+        return {};
+      }
+    },
+    value: {
+      type: Object,
+      default() {
+        return {};
+      }
+    }
+  },
   data() {
     return {
+      showFields: false,
       formData: this.value || {}
     };
   },
@@ -29,6 +47,7 @@ export default {
         value = format(value);
       }
       this.$set(this.value, fieldname, value);
+      this.$emit("input", this.value);
     },
     updateEvent(name) {
       const field = this.schema[name];
@@ -37,3 +56,12 @@ export default {
   }
 };
 </script>
+
+<style lang="stylus" scoped>
+.object-label {
+}
+
+.object-fields {
+  margin-left: 20px;
+}
+</style>
