@@ -11,3 +11,4 @@ export { default as StringBuilder } from "./StringBuilder.vue";
 export { default as NumberBuilder } from "./NumberBuilder.vue";
 export { default as BoolBuilder } from "./BoolBuilder.vue";
 export { default as EventBuilder } from "./EventBuilder.vue";
+export { default as FieldBuilder } from "./FieldBuilder.vue";

@@ -12,6 +12,7 @@
     "lodash": "^4.17.11",
     "p-queue": "^3.0.0",
     "store2": "^2.7.0",
+    "v-contextmenu": "^2.8.0",
     "vue": "^2.5.17",
     "vue-json-ui-editor": "^0.9.0",
     "vue-router": "^3.0.1",

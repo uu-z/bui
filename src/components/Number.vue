@@ -22,12 +22,10 @@ export default {
     label: String,
     name: String,
     min: {
-      type: Number,
-      default: 0
+      type: Number
     },
     max: {
-      type: Number,
-      default: 100
+      type: Number
     },
     step: {
       type: Number,

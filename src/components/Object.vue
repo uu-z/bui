@@ -4,7 +4,7 @@
       :key="name"
       :name="name"
       :is="field.type"
-      :value="value[name]"
+      :value="value[name] || field.default"
       v-for="(field, name) in schema"
       v-bind="field"
       @input="updateForm(name, $event)"

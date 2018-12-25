@@ -1,11 +1,14 @@
 <template lang="pug">
   .object-builder
-    .field-list
-      component(
+    .field-context
+      v-contextmenu(ref="contextmenu")
+        v-contextmenu-item(@click="removeField") 删除
+    .field-list(v-contextmenu:contextmenu)
+      FieldBuilder(
         :key="name"
         v-for="(field, name) in schema"
-        is="Enum"
         v-bind="parseOption(name, field)"
+        @remove="removeField(name)"
         @click:label="handleClickLabel(name)"
         @input="updateForm(name, $event)")
       .add
@@ -50,6 +53,9 @@ export default {
     ...mapVars(["types"])
   },
   methods: {
+    removeField() {
+      this.$delete(this.schema, this.currentFieldName);
+    },
     handleClickLabel(name) {
       this.currentFieldName = name;
     },

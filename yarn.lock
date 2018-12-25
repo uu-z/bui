@@ -6485,6 +6485,13 @@ v-click-outside-x@^3.5.0:
   resolved "https://registry.npmjs.org/v-click-outside-x/-/v-click-outside-x-3.5.3.tgz#4f2bda66ed8091011a4aa97717ef1a3ebebc416c"
   integrity sha512-b7n42NTZ1lv4Q8MmRSyv4aatxnuH+jRbj+uL+EEihBJ2t93Vxt1/LQvca/qDRvvyVcrSGprS4HOYffX7Dk4uTg==
 
+v-contextmenu@^2.8.0:
+  version "2.8.0"
+  resolved "https://registry.npmjs.org/v-contextmenu/-/v-contextmenu-2.8.0.tgz#ee930c974d7a7282451583889ab70c3db03098ad"
+  integrity sha512-Cj5iYDI4R4cwjLKF0vSJChVrQNWUjgV780Fc0gPwZNUxa3ZsRh94whhSOUdGVEURQaapNQ/4RXTqrKB310eGuw==
+  dependencies:
+    vue "^2.5.16"
+
 validate-npm-package-license@^3.0.1:
   version "3.0.3"
   resolved "https://registry.npmjs.org/validate-npm-package-license/-/validate-npm-package-license-3.0.3.tgz#81643bcbef1bdfecd4623793dc4648948ba98338"
@@ -6572,6 +6579,11 @@ vue@^2.5.13, vue@^2.5.17:
   version "2.5.17"
   resolved "http://registry.npm.taobao.org/vue/download/vue-2.5.17.tgz#0f8789ad718be68ca1872629832ed533589c6ada"
   integrity sha1-D4eJrXGL5oyhhyYpgy7VM1icato=
+
+vue@^2.5.16:
+  version "2.5.21"
+  resolved "https://registry.npmjs.org/vue/-/vue-2.5.21.tgz#3d33dcd03bb813912ce894a8303ab553699c4a85"
+  integrity sha512-Aejvyyfhn0zjVeLvXd70h4hrE4zZDx1wfZqia6ekkobLmUZ+vNFQer53B4fu0EjWBSiqApxPejzkO1Znt3joxQ==
 
 vuex@^3.0.1:
   version "3.0.1"

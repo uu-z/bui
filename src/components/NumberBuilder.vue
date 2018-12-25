@@ -27,13 +27,20 @@ export default {
           label: "Type",
           enums: this.types
         },
+        step: {
+          type: "String",
+          label: "Step",
+          default: 0
+        },
         min: {
           type: "String",
-          label: "Min"
+          label: "Min",
+          default: 0
         },
         max: {
           type: "String",
-          label: "Max"
+          label: "Max",
+          default: 100
         }
       };
     }

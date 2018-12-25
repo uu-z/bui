@@ -5,11 +5,17 @@ import store from "./store";
 
 import axios from "axios";
 import * as componens from "./components";
+import contentmenu from "v-contextmenu";
+import "v-contextmenu/dist/index.css";
+
+Vue.use(contentmenu);
 
 if (process.env.NODE_ENV != "prod") {
   window.axios = axios;
 }
-const Plugins = {};
+const Plugins = {
+  contentmenu
+};
 
 const Components = {
   ...componens
