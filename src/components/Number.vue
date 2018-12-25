@@ -28,8 +28,7 @@ export default {
       type: [Number, String]
     },
     step: {
-      type: [Number, String],
-      default: 0
+      type: [Number, String]
     },
     value: {
       type: Number

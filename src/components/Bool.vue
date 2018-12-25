@@ -4,8 +4,10 @@
     input(
       type="checkbox"
       :name="name"
-      v-model="selected"
-      @input="$emit('input', selected)"
+      :checked="value"
+      :true-value="true"
+      :false-value="false"
+      @input="$emit('input', $event.target.checked)"
       )
 </template>
 
@@ -21,8 +23,7 @@ export default {
     name: String,
     label: String,
     value: {
-      type: Boolean,
-      default: false
+      type: Boolean
     }
   }
 };
