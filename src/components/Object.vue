@@ -6,7 +6,7 @@
         :key="name"
         :name="name"
         :is="field.type"
-        :value="value[name] || field.default"
+        :value.sync="value[name] || field.default"
         v-for="(field, name) in schema"
         v-bind="field"
         @input="updateForm(name, $event)"
@@ -28,7 +28,6 @@ export default {
       }
     },
     value: {
-      type: Object,
       default() {
         return {};
       }
@@ -46,8 +45,13 @@ export default {
       if (format) {
         value = format(value);
       }
-      this.$set(this.value, fieldname, value);
-      this.$emit("input", this.value);
+
+      if (typeof this.value !== "object") {
+        this.$emit("input", { [fieldname]: value });
+      } else {
+        this.$set(this.value, fieldname, value);
+        this.$emit("input", this.value);
+      }
     },
     updateEvent(name) {
       const field = this.schema[name];

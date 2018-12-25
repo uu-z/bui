@@ -76,9 +76,6 @@ export default {
     },
     addNewField() {
       if (!this.newField.name) return;
-      // if (this.newField.type == "Object") {
-      //   this.newField.schema = {};
-      // }
       this.$set(this.schema, this.newField.name, this.newField);
       this.resetNewField();
     },
