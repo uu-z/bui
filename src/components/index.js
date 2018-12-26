@@ -5,10 +5,13 @@ export { default as Event } from "./Event.vue";
 export { default as Bool } from "./Bool.vue";
 export { default as Object } from "./Object.vue";
 
-export { default as ObjectBuilder } from "./ObjectBuilder.vue";
+export { default as ClassBuilder } from "./ClassBuilder.vue";
 export { default as EnumBuilder } from "./EnumBuilder.vue";
+export { default as ObjectBuilder } from "./ObjectBuilder.vue";
 export { default as StringBuilder } from "./StringBuilder.vue";
 export { default as NumberBuilder } from "./NumberBuilder.vue";
 export { default as BoolBuilder } from "./BoolBuilder.vue";
 export { default as EventBuilder } from "./EventBuilder.vue";
+
 export { default as FieldBuilder } from "./FieldBuilder.vue";
+export { default as FieldList } from "./FieldList.vue";

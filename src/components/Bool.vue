@@ -18,18 +18,7 @@ export default {
   mounted() {
     this.$emit("input", this.value);
   },
-  data() {
-    return {
-      selected: this.value
-    };
-  },
-  props: {
-    name: String,
-    label: String,
-    value: {
-      type: Boolean
-    }
-  }
+  props: ["name", "label", "value"]
 };
 </script>
 

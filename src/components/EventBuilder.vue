@@ -12,22 +12,24 @@ export default {
   computed: {
     ...mapVars(["types"]),
     schema() {
-      return {
-        name: {
+      return [
+        {
+          name: "name",
           type: "String",
-          disabled: true,
           label: "Name"
         },
-        label: {
+        {
+          name: "label",
           type: "String",
           label: "Label"
         },
-        type: {
+        {
+          name: "type",
           type: "Enum",
           label: "Type",
           enums: this.types
         }
-      };
+      ];
     }
   }
 };

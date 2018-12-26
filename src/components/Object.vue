@@ -3,15 +3,14 @@
     label.object-label(@click="$emit('click:label')") {{label || name}}
     .object-fields
       component(
-        :key="name"
-        :name="name"
+        :key="field.name"
         :is="field.type"
-        :value.sync="value[name] || field.default"
+        :value.sync="value[field.name] || field.default"
         :style="field.style"
-        v-for="(field, name) in schema"
+        v-for="(field, index) in schema"
         v-bind="field"
-        @input="updateForm(name, $event)"
-        @click="updateEvent(name, $event)"
+        @input="updateForm(index, field.name, $event)"
+        @click="updateEvent(index, $event)"
         )
 </template>
 
@@ -25,7 +24,7 @@ export default {
     name: String,
     label: String,
     schema: {
-      type: Object,
+      type: [Object, Array],
       default() {
         return {};
       }
@@ -54,8 +53,8 @@ export default {
       });
       return cache;
     },
-    updateForm(fieldname, value) {
-      const { format } = this.schema[fieldname];
+    updateForm(index, fieldname, value) {
+      const { format } = this.schema[index];
       if (typeof this.value !== "object") {
         this.$emit("input", { [fieldname]: value });
       } else {
@@ -63,9 +62,9 @@ export default {
         this.$emit("input", this.value);
       }
     },
-    updateEvent(name) {
-      const field = this.schema[name];
-      this.$emit("event", { ...field, name });
+    updateEvent(index) {
+      const field = this.schema[index];
+      this.$emit("event", field);
     }
   }
 };

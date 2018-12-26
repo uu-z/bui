@@ -12,41 +12,50 @@ export default {
   computed: {
     ...mapVars(["types"]),
     schema() {
-      return {
-        name: {
+      return [
+        {
+          name: "name",
           type: "String",
-          disabled: true,
           label: "Name"
         },
-        label: {
+        {
+          name: "label",
           type: "String",
           label: "Label"
         },
-        type: {
+        {
+          name: "type",
           type: "Enum",
           label: "Type",
           enums: this.types
         },
-        default: {
+        {
+          name: "default",
           type: "Number",
-          label: "Default"
+          label: "Default",
+          min: this.value.min,
+          max: this.value.max,
+          step: this.value.step
         },
-        step: {
+        {
+          name: "step",
           type: "String",
           label: "Step",
           default: "0"
         },
-        min: {
+        {
+          name: "min",
           type: "String",
           label: "Min",
           default: "0"
         },
-        max: {
+        {
+          name: "max",
           type: "String",
           label: "Max",
           default: "100"
         }
-      };
+      ];
     }
   }
 };

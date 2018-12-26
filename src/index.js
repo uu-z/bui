@@ -7,8 +7,7 @@ import axios from "axios";
 import * as componens from "./components";
 import contentmenu from "v-contextmenu";
 import "v-contextmenu/dist/index.css";
-
-Vue.use(contentmenu);
+import draggable from "vuedraggable";
 
 if (process.env.NODE_ENV != "prod") {
   window.axios = axios;
@@ -18,6 +17,7 @@ const Plugins = {
 };
 
 const Components = {
+  draggable,
   ...componens
 };
 

@@ -12,32 +12,36 @@ export default {
   computed: {
     ...mapVars(["types"]),
     schema() {
-      return {
-        name: {
+      return [
+        {
+          name: "name",
           type: "String",
-          disabled: true,
           label: "Name"
         },
-        label: {
+        {
+          name: "label",
           type: "String",
           label: "Label"
         },
-        type: {
+        {
+          name: "type",
           type: "Enum",
           label: "Type",
           enums: this.types
         },
-        default: {
+        {
+          name: "default",
           type: "Enum",
           label: "Default",
           enums: this.value.enums
         },
-        enums: {
+        {
+          name: "enums",
           type: "String",
           label: "Enums",
           format: v => v.split(",")
         }
-      };
+      ];
     }
   }
 };

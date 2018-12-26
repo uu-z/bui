@@ -1,6 +1,6 @@
 <template lang="pug">
   .example
-    ObjectBuilder.builder(:schema.sync="example.schema")
+    ClassBuilder.builder(:schema.sync="example.schema")
     Object.object(:key="key" :schema.sync="example.schema" :value.sync="value" @event="Event")
 </template>
 
@@ -25,36 +25,45 @@ export default {
       key: Math.random(),
       value: {},
       example: {
-        schema: {
-          Object: {
+        name: "Example",
+        schema: [
+          {
+            name: "Object",
             type: "Object",
-            schema: {
-              Enum: {
+            label: "Object",
+            schema: [
+              {
+                name: "Enum1",
                 type: "Enum",
                 label: "Enum",
                 default: "Foo",
                 enums: ["Foo", "Bar"]
               }
-            }
+            ]
           },
-          Enum: {
+          {
+            name: "Enum2",
             type: "Enum",
+            cType: "Variable",
             label: "Enum",
             default: "Foo",
             enums: ["Foo", "Bar"]
           },
-          String: {
+          {
+            name: "String",
             type: "String",
             placeholder: "placeholder",
             default: "Hello World!",
             label: "String"
           },
-          Int: {
+          {
+            name: "Int",
             type: "Number",
             label: "Int",
             default: 23
           },
-          Float: {
+          {
+            name: "Float",
             type: "Number",
             label: "Float",
             default: 23.33,
@@ -62,12 +71,14 @@ export default {
             min: 0,
             max: 100
           },
-          Bool: {
+          {
+            name: "Bool",
             type: "Bool",
             label: "Bool",
             default: true
           },
-          Reload: {
+          {
+            name: "Reload",
             type: "Event",
             label: "Reload",
             callback: () => {
@@ -75,7 +86,7 @@ export default {
               this.value = {};
             }
           }
-        }
+        ]
       }
     };
   }

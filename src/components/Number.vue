@@ -33,9 +33,7 @@ export default {
       type: [Number, String],
       default: 0
     },
-    value: {
-      type: Number
-    }
+    value: {}
   }
 };
 </script>
