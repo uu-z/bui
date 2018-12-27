@@ -1,6 +1,6 @@
 <template lang="pug">
-  div
-    label(@click="$emit('click:label')") {{label || name}}
+  .bool
+    label.field-label-text(v-if="showLabel" @click="$emit('click:label')") {{label || name}}
     input(
       ref="Bool"
       type="checkbox"
@@ -15,10 +15,23 @@
 <script>
 export default {
   name: "Bool",
+  data() {
+    return {
+      open: false
+    };
+  },
   mounted() {
     this.$emit("input", this.value);
   },
-  props: ["name", "label", "value"]
+  props: {
+    name: {},
+    label: {},
+    value: {},
+    cType: {},
+    showLabel: {
+      default: true
+    }
+  }
 };
 </script>
 

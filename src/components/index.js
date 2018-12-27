@@ -4,6 +4,7 @@ export { default as Number } from "./Number.vue";
 export { default as Event } from "./Event.vue";
 export { default as Bool } from "./Bool.vue";
 export { default as Object } from "./Object.vue";
+export { default as Array } from "./Array.vue";
 
 export { default as ClassBuilder } from "./ClassBuilder.vue";
 export { default as EnumBuilder } from "./EnumBuilder.vue";

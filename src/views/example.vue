@@ -29,7 +29,13 @@ export default {
           {
             name: "Object",
             type: "Object",
+            cType: "Array",
             label: "Object",
+            default: [
+              {
+                Enum1: "Foo"
+              }
+            ],
             schema: [
               {
                 name: "Enum1",
@@ -43,23 +49,25 @@ export default {
           {
             name: "Enum2",
             type: "Enum",
-            cType: "Variable",
+            cType: "Array",
             label: "Enum",
-            default: "Foo",
+            default: ["Foo"],
             enums: ["Foo", "Bar"]
           },
           {
             name: "String",
             type: "String",
+            cType: "Array",
             placeholder: "placeholder",
-            default: "Hello World!",
+            default: ["foo", "bar"],
             label: "String"
           },
           {
             name: "Int",
             type: "Number",
+            cType: "Array",
             label: "Int",
-            default: 23
+            default: [23]
           },
           {
             name: "Float",

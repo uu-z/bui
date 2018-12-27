@@ -7,7 +7,8 @@ const state = {
   ...config,
   events: ["Hello"],
   ObjViewType: ["Tabs", "Collapsible", "Radio", "Block", "Simple"],
-  types: ["Object", "String", "Enum", "Number", "Bool", "Variable", "Array", "Map", "Set", "Event", "Script"]
+  types: ["Object", "String", "Enum", "Number", "Bool", "Variable", "Event", "Script"],
+  cTypes: ["Variable", "Array"]
 };
 
 const mutations = {

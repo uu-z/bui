@@ -1,17 +1,23 @@
 <template lang="pug">
   .object
-    label.object-label(@click="$emit('click:label')") {{label || name}}
-    .object-fields
+    label.field-label-text(v-if="showLabel" @click="$emit('click:label')") {{label || name}}
+    .object-fields(v-for="(field, index) in schema")
       component(
-        :key="field.name"
+        v-if="!['Array'].includes(field.cType)"
+        :key="field.name + field.type + field.cType "
         :is="field.type"
         :value.sync="value[field.name] || field.default"
+        :cType="field.cType || 'Variable'"
         :style="field.style"
-        v-for="(field, index) in schema"
         v-bind="field"
         @input="updateForm(index, field.name, $event)"
-        @click="updateEvent(index, $event)"
-        )
+        @click="updateEvent(index, $event)")
+      Array(
+        :field="field"
+        :value.sync="value[field.name] || field.default"
+        v-if="field.cType=='Array'"
+        @input="updateForm(index, field.name, $event)")
+
 </template>
 
 
@@ -23,6 +29,9 @@ export default {
   props: {
     name: String,
     label: String,
+    showLabel: {
+      default: true
+    },
     schema: {
       type: [Object, Array],
       default() {
@@ -36,6 +45,12 @@ export default {
     }
   },
   methods: {
+    parseComponent(field) {
+      if (field.cType == "Array") {
+        return "Array";
+      }
+      return field.type;
+    },
     updateForm(index, fieldname, value) {
       this.$set(this.value, fieldname, value);
     },
@@ -49,5 +64,5 @@ export default {
 
 <style lang="stylus" scoped>
 .object-fields
-  margin-left 20px
+  margin-left 10px
 </style>

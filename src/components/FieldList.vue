@@ -1,15 +1,16 @@
 <template lang="pug">
-  draggable(
+  draggable.fieldList(
     v-model="object.schema"
     :options="dragOptions" )
     .draggable-item(
       v-for="(item, index) in object.schema"
       :key="item.name")
-      div.field-label(
+      .draggable-field(
         @click="$emit('click:label',{index,field: item, parent: object.schema})"
         @contextmenu.prevent="$emit('click:label',{index, field: item, parent: object.schema})")
         span.arrow(v-if="item.schema" :class="{right: true, rotated: open}" @click="open = !open")
-        span {{item.name}}
+        span.draggable-field-label {{item.name}}
+        Object(:schema="schema" :value.sync="item")
       FieldList.field-sublist(
         v-if="open && item.schema"
         :object.sync="item"
@@ -25,6 +26,11 @@ export default {
   props: ["object"],
   data() {
     return {
+      dragOptions: {
+        animation: 0,
+        group: "description",
+        ghostClass: "ghost"
+      },
       open: true
     };
   },
@@ -32,31 +38,41 @@ export default {
     clickLabel() {}
   },
   computed: {
-    ...mapVars(["types"]),
-    dragOptions() {
-      return {
-        animation: 0,
-        group: "description",
-        ghostClass: "ghost"
-      };
-    }
+    schema() {
+      return [
+        {
+          name: "type",
+          type: "Enum",
+          label: "Type",
+          showLabel: false,
+          enums: this.types
+        },
+        {
+          name: "cType",
+          type: "Enum",
+          label: "cType",
+          default: "Variable",
+          showLabel: false,
+          enums: this.cTypes
+        }
+      ];
+    },
+    ...mapVars(["types", "cTypes"])
   }
 };
 </script>
 
-
-<style lang="stylus" scoped>
-.draggable-item
-  position relative
-  .field-label
-    display inline-block
-    margin-left 14px
-  .arrow
-    position absolute
-    top 7px
-    left 0px
-    transition transform 0.1s ease
-.field-sublist
-  margin-left 10px
+<style lang="stylus">
+.fieldList
+  .draggable-item
+    position relative
+    .draggable-field
+      display flex
+      margin-left 14px
+      .draggable-field-label
+        width 50px
+      .object
+        display flex
+  .field-sublist
+    margin-left 10px
 </style>
-

@@ -23,6 +23,11 @@ export default {
 </script>
 
 <style lang="stylus">
+.field
+  display flex
+  position relative
+  .field-label-text
+    margin-left 14px
 .arrow
   display inline-block
   width 0
@@ -30,6 +35,10 @@ export default {
   transition transform 0.1s ease
   margin-right 8px
   opacity 0.7
+  position absolute
+  top 7px
+  left 0px
+  transition transform 0.1s ease
   &.right
     border-top 4px solid transparent
     border-bottom 4px solid transparent

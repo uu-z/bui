@@ -1,6 +1,6 @@
 <template lang="pug">
-  div
-    label(@click="$emit('click:label')") {{label || name}}
+  .enum
+    label.field-label-text(v-if="showLabel" @click="$emit('click:label')") {{label || name}}
     select(
       :value="value"
       @input="$emit('input', $event.target.value)"
@@ -14,10 +14,28 @@
 <script>
 export default {
   name: "Enum",
-  props: ["enums", "name", "label", "value"],
+  data() {
+    return {
+      open: false
+    };
+  },
+  props: {
+    enums: {},
+    name: {},
+    cType: {},
+    showLabel: {
+      default: true
+    },
+    label: {},
+    value: {}
+  },
   mounted() {
     this.$emit("input", this.value);
   }
 };
 </script>
+
+<style lang="stylus">
+</style>
+
 
