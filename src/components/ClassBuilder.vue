@@ -1,30 +1,20 @@
 <template lang="pug">
   .object-builder
-    .add
-      input(v-model="newField.name")
-      Enum(v-model="newField.type" :enums="types")
-      button(@click="addNewField") +
     .filed-builder
       .field-context
         v-contextmenu(ref="contextmenu")
-          v-contextmenu-item(@click="removeField") 删除
+          v-contextmenu-item(@click="addNewField") Add Field
+          v-contextmenu-item(@click="addNewObject") Add Object
+          v-contextmenu-item(@click="removeField") Remove
       FieldList(
         v-contextmenu:contextmenu
         :schema="schema"
         @click:label="handleClickLabel"
         @update:schema="$emit('update:schema', $event)")
-      //- .field-list(v-contextmenu:contextmenu)
-      //-   FieldBuilder.field-builder(
-      //-     :key="name"
-      //-     :class="{active: currentFieldName == name}"
-      //-     v-for="(field, name) in schema"
-      //-     v-bind="parseOption(name, field)"
-      //-     @click:label="handleClickLabel(name)"
-      //-     @inputs="updateFields(name, $event)")
       .field-detail(v-if="currentField")
         component(
-          :is="currentField.type + 'Builder'"
-          :value="currentField")
+          :is="currentField.field.type + 'Builder'"
+          :value="currentField.field")
 </template>
 
 
@@ -40,7 +30,6 @@ export default {
   },
   data() {
     return {
-      currentFieldPath: "",
       currentField: null,
       newField: {
         type: "String",
@@ -53,23 +42,41 @@ export default {
   },
   methods: {
     removeField() {
-      this.$delete(this.schema, this.currentFieldPath);
+      this.$delete(this.currentField.parent, this.currentField.index);
+      this.currentField = null;
     },
-    handleClickLabel(path, item) {
-      this.currentFieldPath = path;
-      this.currentField = item;
-      // this.currentFieldName = name;
-    },
-    resetNewField() {
-      this.newField = {
-        type: "String",
-        name: ""
-      };
+    handleClickLabel(data) {
+      this.currentField = data;
     },
     addNewField() {
-      if (!this.newField.name) return;
-      this.$emit("update:schema", [...this.schema, this.newField]);
-      this.resetNewField();
+      const { parent, field } = this.currentField;
+      if (field.schema) {
+        field.schema.push({
+          name: `NewField${field.schema.length}`,
+          type: "String"
+        });
+      } else {
+        parent.push({
+          name: `NewField${parent.length}`,
+          type: "String"
+        });
+      }
+    },
+    addNewObject() {
+      const { parent, field } = this.currentField;
+      if (field.schema) {
+        field.schema.push({
+          name: `NewObject${field.schema.length}`,
+          type: "Object",
+          schema: []
+        });
+      } else {
+        parent.push({
+          name: `NewObject${parent.length}`,
+          type: "Object",
+          schema: []
+        });
+      }
     },
     parseOption(name, field) {
       return {

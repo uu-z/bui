@@ -7,12 +7,12 @@
         v-for="(item, index) in schema"
         :key="item.name")
         div(
-          @click="$emit('click:label', index+'', item)"
-          @contextmenu.prevent="$emit('click:label', index+'', item)") {{item.name}}
+          @click="$emit('click:label',{index,field: item, parent: schema})"
+          @contextmenu.prevent="$emit('click:label',{index, field: item, parent: schema})") {{item.name}}
         FieldList.field-sublist(
           v-if="item.schema"
           :schema.sync="item.schema"
-          @click:label="(path, item) => $emit('click:label', index + '.schema.' + path, item)"
+          @click:label="$emit('click:label', $event)"
           )
 </template>
 

@@ -23,12 +23,6 @@ export default {
           name: "label",
           type: "String",
           label: "Label"
-        },
-        {
-          name: "type",
-          type: "Enum",
-          label: "Type",
-          enums: this.types
         }
       ];
     }

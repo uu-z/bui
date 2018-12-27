@@ -6,7 +6,7 @@ import config from "../config";
 const state = {
   ...config,
   events: ["Hello"],
-  types: ["Object", "String", "Enum", "Number", "Bool", "Event", "Array", "Map", "Set"],
+  types: ["String", "Enum", "Number", "Bool", "Event", "Array", "Map", "Set"],
   cTypes: ["Variable", "Array", "Map", "Set"]
 };
 
