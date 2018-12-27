@@ -1,6 +1,6 @@
 <template lang="pug">
   .example
-    ClassBuilder.builder(:schema.sync="example.schema")
+    ClassBuilder.builder(:object.sync="example")
     Object.object(:key="key" :schema.sync="example.schema" :value.sync="value" @event="Event")
 </template>
 

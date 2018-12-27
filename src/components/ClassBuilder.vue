@@ -8,9 +8,8 @@
           v-contextmenu-item(@click="removeField") Remove
       FieldList(
         v-contextmenu:contextmenu
-        :schema="schema"
-        @click:label="handleClickLabel"
-        @update:schema="$emit('update:schema', $event)")
+        :object.sync="object"
+        @click:label="handleClickLabel")
       .field-detail(v-if="currentField")
         component(
           :is="currentField.field.type + 'Builder'"
@@ -23,11 +22,7 @@ import { request, mapVars, mapObjs } from "../utils";
 
 export default {
   name: "ClassBuilder",
-  props: {
-    schema: {
-      type: [Array, Object]
-    }
-  },
+  props: ["object"],
   data() {
     return {
       currentField: null,
@@ -38,6 +33,14 @@ export default {
     };
   },
   computed: {
+    schema: {
+      get() {
+        return this.object.schema;
+      },
+      set(schema) {
+        this.$set(this.object, "schema", schema);
+      }
+    },
     ...mapVars(["types"])
   },
   methods: {
@@ -77,26 +80,6 @@ export default {
           schema: []
         });
       }
-    },
-    parseOption(name, field) {
-      return {
-        ...field,
-        value: field.type
-      };
-    },
-    updateFields(name, obj) {
-      _.each(obj, (v, k) => {
-        this.updateField(name, k, v);
-      });
-    },
-    updateField(name, key, val) {
-      const target = this.schema[name];
-      if (key == "type" && val == "Object") {
-        if (!target.schema) {
-          this.$set(this.schema[name], "schema", {});
-        }
-      }
-      this.$set(this.schema[name], key, val);
     }
   }
 };

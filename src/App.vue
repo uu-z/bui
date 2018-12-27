@@ -23,4 +23,17 @@ export default {
 </script>
 
 <style lang="stylus">
+.arrow
+  display inline-block
+  width 0
+  height 0
+  transition transform 0.1s ease
+  margin-right 8px
+  opacity 0.7
+  &.right
+    border-top 4px solid transparent
+    border-bottom 4px solid transparent
+    border-left 6px solid #444
+  &.rotated
+    transform rotate(90deg)
 </style>
