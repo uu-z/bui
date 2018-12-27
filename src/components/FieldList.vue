@@ -1,13 +1,13 @@
 <template lang="pug">
   draggable(
-    v-model="schema"
+    v-model="object.schema"
     :options="dragOptions" )
     .draggable-item(
-      v-for="(item, index) in schema"
+      v-for="(item, index) in object.schema"
       :key="item.name")
       div.field-label(
-        @click="$emit('click:label',{index,field: item, parent: schema})"
-        @contextmenu.prevent="$emit('click:label',{index, field: item, parent: schema})")
+        @click="$emit('click:label',{index,field: item, parent: object.schema})"
+        @contextmenu.prevent="$emit('click:label',{index, field: item, parent: object.schema})")
         span.arrow(v-if="item.schema" :class="{right: true, rotated: open}" @click="open = !open")
         span {{item.name}}
       FieldList.field-sublist(
@@ -17,35 +17,28 @@
 </template>
 
 <script>
+import _ from "lodash";
+import { request, mapVars, mapObjs } from "../utils";
+
 export default {
   name: "FieldList",
   props: ["object"],
   data() {
     return {
-      open: false
+      open: true
     };
   },
   methods: {
     clickLabel() {}
   },
   computed: {
+    ...mapVars(["types"]),
     dragOptions() {
       return {
         animation: 0,
         group: "description",
         ghostClass: "ghost"
       };
-    },
-    schema: {
-      get() {
-        return this.object.schema;
-      },
-      set(schema) {
-        this.$emit("update:object", {
-          ...object,
-          schema
-        });
-      }
     }
   }
 };

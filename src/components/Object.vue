@@ -35,32 +35,9 @@ export default {
       }
     }
   },
-  data() {
-    return {
-      showFields: false,
-      formData: this.value || {}
-    };
-  },
   methods: {
-    getDefaults(schema) {
-      let cache = {};
-      _.each(schema, (v, k) => {
-        if (v.type == "Object") {
-          cache[k] = _.get(this.value, k) || this.getDefaults(v.schema);
-        } else {
-          cache[k] = _.get(this.value, k) || v.default;
-        }
-      });
-      return cache;
-    },
     updateForm(index, fieldname, value) {
-      const { format } = this.schema[index];
-      if (typeof this.value !== "object") {
-        this.$emit("input", { [fieldname]: value });
-      } else {
-        this.$set(this.value, fieldname, value);
-        this.$emit("input", this.value);
-      }
+      this.$set(this.value, fieldname, value);
     },
     updateEvent(index) {
       const field = this.schema[index];

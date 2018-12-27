@@ -17,7 +17,6 @@ export default {
       if (data.callback) {
         data.callback();
       }
-      console.log(data);
     }
   },
   data() {

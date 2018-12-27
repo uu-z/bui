@@ -6,8 +6,8 @@ import config from "../config";
 const state = {
   ...config,
   events: ["Hello"],
-  types: ["String", "Enum", "Number", "Bool", "Event", "Array", "Map", "Set"],
-  cTypes: ["Variable", "Array", "Map", "Set"]
+  ObjViewType: ["Tabs", "Collapsible", "Radio", "Block", "Simple"],
+  types: ["Object", "String", "Enum", "Number", "Bool", "Variable", "Array", "Map", "Set", "Event", "Script"]
 };
 
 const mutations = {

@@ -53,11 +53,15 @@ export default {
     },
     addNewField() {
       const { parent, field } = this.currentField;
-      if (field.schema) {
-        field.schema.push({
-          name: `NewField${field.schema.length}`,
-          type: "String"
-        });
+      if (field.type == "Object") {
+        const { schema = [] } = field;
+        this.$set(field, "schema", [
+          ...schema,
+          {
+            name: `NewField${schema.length}`,
+            type: "String"
+          }
+        ]);
       } else {
         parent.push({
           name: `NewField${parent.length}`,
@@ -67,12 +71,16 @@ export default {
     },
     addNewObject() {
       const { parent, field } = this.currentField;
-      if (field.schema) {
-        field.schema.push({
-          name: `NewObject${field.schema.length}`,
-          type: "Object",
-          schema: []
-        });
+      if (field.type == "Object") {
+        const { schema = [] } = field;
+        this.$set(field, "schema", [
+          ...schema,
+          {
+            name: `NewObject${schema.length}`,
+            type: "Object",
+            schema: []
+          }
+        ]);
       } else {
         parent.push({
           name: `NewObject${parent.length}`,
