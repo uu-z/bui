@@ -1,9 +1,10 @@
 <template lang="pug">
   .example
+    pre.schema schema: {{example.schema}}
     ClassBuilder.builder(:object.sync="example")
     .data
       Object(:key="key" :schema.sync="example.schema" :value.sync="value" @event="Event")
-      pre {{value}}
+      pre value: {{value}}
 </template>
 
 <script>
@@ -107,7 +108,11 @@ export default {
   display flex
   flex-direction column
   align-items center
+  .schema
+    position absolute
+    right 5vw
   .builder
+    display flex
     margin 2vw
   .data
     display flex
