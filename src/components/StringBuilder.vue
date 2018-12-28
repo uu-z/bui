@@ -1,6 +1,6 @@
 <template lang="pug">
   .route
-    Object(:schema="schema" :value.sync="value")
+    Object(:schema.sync="schema" :value.sync="value")
 </template>
 
 <script>
@@ -39,7 +39,8 @@ export default {
           name: "default",
           type: "String",
           label: "Default",
-          cType: this.value.cType
+          cType: this.value.cType,
+          open: true
         }
       ];
     }

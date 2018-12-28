@@ -1,6 +1,6 @@
 <template lang="pug">
   .route
-    Object(:schema="schema" :value.sync="value")
+    Object(:schema.sync="schema" :value.sync="value")
 </template>
 
 <script>
@@ -37,15 +37,6 @@ export default {
           enums: this.cTypes
         },
         {
-          name: "default",
-          type: "Number",
-          cType: this.value.cType,
-          label: "Default",
-          min: this.value.min,
-          max: this.value.max,
-          step: this.value.step
-        },
-        {
           name: "step",
           type: "String",
           label: "Step",
@@ -62,6 +53,16 @@ export default {
           type: "String",
           label: "Max",
           default: "100"
+        },
+        {
+          name: "default",
+          type: "Number",
+          cType: this.value.cType,
+          label: "Default",
+          open: true,
+          min: this.value.min,
+          max: this.value.max,
+          step: this.value.step
         }
       ];
     }

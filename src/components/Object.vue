@@ -10,14 +10,15 @@
         :cType="field.cType || 'Variable'"
         :style="field.style"
         v-bind="field"
-        @input="updateForm(index, field.name, $event)"
+        @input="updateValue(index, field.name, $event)"
         @click="updateEvent(index, $event)")
       Array(
-        :field="field"
-        :value.sync="value[field.name] || field.default"
+        :key="field.name"
+        :field.sync="field"
+        :value.sync="value[field.name]"
+        :defaultVal="field.default"
         v-if="field.cType=='Array'"
-        @input="updateForm(index, field.name, $event)")
-
+        @input="updateValue(index, field.name, $event)")
 </template>
 
 
@@ -51,7 +52,7 @@ export default {
       }
       return field.type;
     },
-    updateForm(index, fieldname, value) {
+    updateValue(index, fieldname, value) {
       this.$set(this.value, fieldname, value);
     },
     updateEvent(index) {

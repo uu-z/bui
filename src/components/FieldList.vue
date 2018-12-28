@@ -64,7 +64,7 @@ export default {
 
 <style lang="stylus">
 .object-builder
-  .fieldList
+  .field-container
     .object-fields
       margin-left 10px
     .draggable-item

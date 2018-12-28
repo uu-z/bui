@@ -1,13 +1,13 @@
 <template lang="pug">
   .array
     .field
-      .field-label(@click="open = !open")
-        span.arrow(:class="{right: true, rotated: open}")
+      .field-label(@click="handleOpen")
+        span.arrow(:class="{right: true, rotated: field.open}")
         label.field-label-text(v-if="showLabel" @click="$emit('click:label')") {{field.label || field.name}}
       .field-action
         span.add(@click="add") {{' +'}}
     draggable.fieldList(
-      v-if="open"
+      v-if="field.open"
       v-model="_value"
       :options="dragOptions" )
       .draggable-item(
@@ -20,7 +20,7 @@
           :showRange="false"
           :style="field.style"
           v-bind="field"
-          @input="updateForm(index, field.name, $event)")
+          @input="updateForm(index, $event)")
         span.remove(@click="remove(index)")  -
 </template>
 
@@ -35,17 +35,17 @@ export default {
         animation: 0,
         group: "description",
         ghostClass: "ghost"
-      },
-      open: false
+      }
     };
   },
   props: {
     field: {},
-    value: {
+    defaultVal: {
       default() {
         return [];
       }
     },
+    value: {},
     showLabel: {
       default: true
     }
@@ -63,12 +63,14 @@ export default {
   },
   mounted() {
     if (!Array.isArray(this.value)) {
-      this.$emit("input", []);
-    } else {
-      this.$emit("input", this.value);
+      this.$emit("input", [...this.defaultVal]);
     }
   },
   methods: {
+    handleOpen() {
+      this.$set(this.field, "open", !this.field.open);
+      this.$forceUpdate();
+    },
     add() {
       const value = _.get(this.defaultValue, this.field.type, {});
       this.value.push(value);
@@ -76,7 +78,7 @@ export default {
     remove(index) {
       this.$delete(this.value, index);
     },
-    updateForm(index, fieldname, value) {
+    updateForm(index, value) {
       this.$set(this.value, index, value);
       this.$emit("input", this.value);
     }

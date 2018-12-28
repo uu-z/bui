@@ -6,7 +6,7 @@
           v-contextmenu-item(@click="addNewField") Add Field
           v-contextmenu-item(@click="addNewObject") Add Object
           v-contextmenu-item(@click="removeField") Remove
-      FieldList(
+      FieldList.field-container(
         v-contextmenu:contextmenu
         :object.sync="object"
         @click:label="handleClickLabel")

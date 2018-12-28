@@ -1,6 +1,6 @@
 <template lang="pug">
   .route
-    Object(:schema="schema" :value.sync="value")
+    Object(:schema.sync="schema" :value.sync="value")
 </template>
 
 <script>
@@ -35,6 +35,14 @@ export default {
           type: "Enum",
           label: "cType",
           enums: this.cTypes
+        },
+        {
+          name: "default",
+          type: "Object",
+          label: "Default",
+          cType: this.value.cType,
+          schema: this.value.schema,
+          open: true
         }
       ];
     }

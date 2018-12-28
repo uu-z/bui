@@ -1,7 +1,9 @@
 <template lang="pug">
   .example
     ClassBuilder.builder(:object.sync="example")
-    Object(:key="key" :schema.sync="example.schema" :value.sync="value" @event="Event")
+    .data
+      Object(:key="key" :schema.sync="example.schema" :value.sync="value" @event="Event")
+      pre {{value}}
 </template>
 
 <script>
@@ -107,4 +109,6 @@ export default {
   align-items center
   .builder
     margin 2vw
+  .data
+    display flex
 </style>
