@@ -89,6 +89,9 @@ export default {
 <style lang="stylus">
 .array
   position relative
+  .object[ctype='Array']
+    >.object-fields
+      margin-left 0
   .fieldList
     margin-left 14px
   .field-label-text
