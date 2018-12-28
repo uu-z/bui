@@ -89,7 +89,7 @@ export default {
           },
           {
             name: "Reload",
-            type: "Event",
+            type: "Callback",
             label: "Reload",
             callback: () => {
               this.key = Math.random();

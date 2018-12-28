@@ -7,7 +7,7 @@ const state = {
   ...config,
   events: ["Hello"],
   ObjViewType: ["Tabs", "Collapsible", "Radio", "Block", "Simple"],
-  types: ["Object", "String", "Enum", "Number", "Bool", "Variable", "Event", "Script"],
+  types: ["Object", "String", "Enum", "Number", "Bool", "Variable", "Callback", "Script"],
   cTypes: ["Variable", "Array"],
   defaultValue: {
     String: "",
