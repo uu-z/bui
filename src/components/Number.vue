@@ -1,7 +1,8 @@
 <template lang="pug">
   div
-    label {{label || name}}
+    label.field-label-text(v-if="showLabel" @click="$emit('click:label')") {{label || name}}
     input(
+      v-if="showRange"
       type="range"
       :name="name"
       :value="value"
@@ -9,7 +10,14 @@
       :max="max"
       :step="step"
       @input="$emit('input', +$event.target.value)")
-    label {{value}}
+    input(
+      type="number"
+      :name="name"
+      :min="min"
+      :max="max"
+      :step="step"
+      :value="value"
+      @input="$emit('input', $event.target.value)")
 </template>
 
 <script>
@@ -21,6 +29,12 @@ export default {
   props: {
     label: String,
     name: String,
+    showLabel: {
+      default: true
+    },
+    showRange: {
+      default: true
+    },
     min: {
       type: [Number, String],
       default: 0

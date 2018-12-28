@@ -32,6 +32,7 @@ export default {
         {
           name: "default",
           type: "Number",
+          cType: this.value.cType,
           label: "Default",
           min: this.value.min,
           max: this.value.max,

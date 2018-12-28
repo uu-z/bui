@@ -63,6 +63,4 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.object-fields
-  margin-left 10px
 </style>

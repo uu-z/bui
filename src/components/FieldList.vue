@@ -63,16 +63,19 @@ export default {
 </script>
 
 <style lang="stylus">
-.fieldList
-  .draggable-item
-    position relative
-    .draggable-field
-      display flex
-      margin-left 14px
-      .draggable-field-label
-        width 50px
-      .object
+.object-builder
+  .fieldList
+    .object-fields
+      margin-left 10px
+    .draggable-item
+      position relative
+      .draggable-field
         display flex
-  .field-sublist
-    margin-left 10px
+        margin-left 14px
+        .draggable-field-label
+          width 50px
+        .object
+          display flex
+    .field-sublist
+      margin-left 10px
 </style>
