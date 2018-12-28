@@ -1,7 +1,7 @@
 <template lang="pug">
   .example
     ClassBuilder.builder(:object.sync="example")
-    Object.object(:key="key" :schema.sync="example.schema" :value.sync="value" @event="Event")
+    Object(:key="key" :schema.sync="example.schema" :value.sync="value" @event="Event")
 </template>
 
 <script>

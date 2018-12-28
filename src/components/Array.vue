@@ -42,7 +42,6 @@ export default {
   props: {
     field: {},
     value: {
-      type: Array,
       default() {
         return [];
       }
@@ -63,7 +62,11 @@ export default {
     }
   },
   mounted() {
-    this.$emit("input", this.value);
+    if (!Array.isArray(this.value)) {
+      this.$emit("input", []);
+    } else {
+      this.$emit("input", this.value);
+    }
   },
   methods: {
     add() {
@@ -84,6 +87,8 @@ export default {
 <style lang="stylus">
 .array
   position relative
+  .object-fields
+    margin-left 0
   .fieldList
     margin-left 14px
   .field-label-text

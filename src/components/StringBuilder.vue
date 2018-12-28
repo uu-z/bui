@@ -38,7 +38,8 @@ export default {
         {
           name: "default",
           type: "String",
-          label: "Default"
+          label: "Default",
+          cType: this.value.cType
         }
       ];
     }

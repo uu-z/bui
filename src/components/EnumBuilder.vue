@@ -46,6 +46,7 @@ export default {
           name: "default",
           type: "Enum",
           label: "Default",
+          cType: this.value.cType,
           enums: this.value.enums
         }
       ];

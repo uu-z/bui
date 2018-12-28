@@ -10,7 +10,7 @@ import { request, mapVars, mapObjs } from "../utils";
 export default {
   props: ["value"],
   computed: {
-    ...mapVars(["types"]),
+    ...mapVars(["types", "cTypes"]),
     schema() {
       return [
         {
@@ -28,6 +28,13 @@ export default {
           type: "Enum",
           label: "Type",
           enums: this.types
+        },
+        {
+          name: "cType",
+          type: "Enum",
+          label: "cType",
+          default: "Variable",
+          enums: this.cTypes
         },
         {
           name: "default",
