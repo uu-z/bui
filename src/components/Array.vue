@@ -89,8 +89,6 @@ export default {
 <style lang="stylus">
 .array
   position relative
-  .object-fields
-    margin-left 0
   .fieldList
     margin-left 14px
   .field-label-text
