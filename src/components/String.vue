@@ -1,7 +1,8 @@
 <template lang="pug">
   .string
     label.field-label-text(v-if="showLabel" @click="$emit('click:label')") {{label || name}}
-    input(
+    component(
+      :is="vType"
       type="text"
       :name="name"
       :value="value"
@@ -21,6 +22,9 @@ export default {
       default: true
     },
     type: {},
+    vType: {
+      default: "input"
+    },
     label: {},
     name: {},
     value: {}

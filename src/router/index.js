@@ -16,6 +16,11 @@ const router = new Router({
       component: require("@/views/example").default
     },
     {
+      path: "/g6",
+      name: "g6",
+      component: require("@/views/g6").default
+    },
+    {
       path: "*",
       redirect: "/"
     }

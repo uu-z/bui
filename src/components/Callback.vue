@@ -5,7 +5,6 @@
 
 <script>
 export default {
-  name: "Enum",
   props: ["label", "name", "value"]
 };
 </script>

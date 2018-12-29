@@ -3,8 +3,8 @@
     pre.schema schema: {{example.schema}}
     ClassBuilder.builder(:object.sync="example")
     .data
-      Object(:key="key" :schema.sync="example.schema" :value.sync="value" @event="Event")
-      pre value: {{value}}
+      Object(:key="key" :schema.sync="example.schema" :value.sync="example.value" @event="Event($event, example)")
+      pre value: {{example.value}}
 </template>
 
 <script>
@@ -16,29 +16,25 @@ export default {
     ...mapVars(["types"])
   },
   methods: {
-    Event(data) {
+    Event(data, node) {
       if (data.callback) {
-        data.callback();
+        data.callback({ node });
       }
     }
   },
   data() {
     return {
       key: Math.random(),
-      value: {},
       example: {
         name: "Example",
+        value: {},
         schema: [
           {
             name: "Object",
             type: "Object",
             cType: "Array",
             label: "Object",
-            default: [
-              {
-                Enum1: "Foo"
-              }
-            ],
+            default: [{ Enum1: "Foo" }],
             schema: [
               {
                 name: "Enum1",
@@ -91,9 +87,9 @@ export default {
             name: "Reload",
             type: "Callback",
             label: "Reload",
-            callback: () => {
+            callback: ({ node }) => {
               this.key = Math.random();
-              this.value = {};
+              node.value = {};
             }
           }
         ]
