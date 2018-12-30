@@ -19,6 +19,11 @@
     "@antv/util" "~1.2.5"
     wolfy87-eventemitter "~5.1.0"
 
+"@antv/g6-editor@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.npmjs.org/@antv/g6-editor/-/g6-editor-1.2.0.tgz#2e46246fad8b4024b42ff21c4e9f248657108e48"
+  integrity sha512-0pBCqufPFjDF8Y19eB4P2Fr+uDK/fC9KAVXHhJYtNn+ADj0kZeF6TI5aJS9kMtLpDbbpVUBHM2i5TvD7xRRDEQ==
+
 "@antv/g6@^2.2.6":
   version "2.2.6"
   resolved "https://registry.npmjs.org/@antv/g6/-/g6-2.2.6.tgz#dca9f9474ae5bd2cae23fd9ff97f774b496c59ad"

@@ -21,6 +21,11 @@ const router = new Router({
       component: require("@/views/g6").default
     },
     {
+      path: "/editor",
+      name: "editor",
+      component: require("@/views/editor").default
+    },
+    {
       path: "*",
       redirect: "/"
     }

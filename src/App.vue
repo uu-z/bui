@@ -1,8 +1,7 @@
 <template lang="pug">
   .home
-    ul.menu
-      li(v-for="menu in menus")
-        router-link(:to="menu.to") {{menu.name}}
+    .menus
+      router-link.menu(v-for="menu in menus" :to="menu.to") {{menu.name}}
     router-view
 </template>
 
@@ -12,7 +11,7 @@ import { request, mapVars, mapObjs } from "./utils";
 export default {
   data() {
     return {
-      menus: [{ name: "example", to: "example" }, { name: "g6", to: "g6" }]
+      menus: [{ name: "example", to: "example" }, { name: "g6", to: "g6" }, { name: "editor", to: "editor" }]
     };
   },
   computed: {
@@ -23,9 +22,10 @@ export default {
 </script>
 
 <style lang="stylus">
-.menu
-  z-index 9
-  position absolute
+.menus
+  display flex
+  .menu
+    margin 10px
 .field
   display flex
   position relative

@@ -2,9 +2,7 @@
   div
     v-contextmenu.field-context(ref="contextmenu")
       v-contextmenu-item(@click="addNode") Test
-    div#mountNode(
-      v-contextmenu:contextmenu
-    )
+    #mountNode(v-contextmenu:contextmenu)
     Object(
       v-if="currentNode"
       :schema.sync="currentNode.schema"
@@ -32,6 +30,10 @@ export default {
             id: "node1",
             x: 100,
             y: 200,
+            type: "node",
+            color: "#FA8C16",
+            label: "Start",
+            shape: "flow-rect",
             schema: [
               {
                 name: "String",
