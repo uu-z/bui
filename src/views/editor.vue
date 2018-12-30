@@ -19,23 +19,46 @@
       button.command(data-command="multiSelect" ) 多选
       button.command(data-command="addGroup" ) 成组
       button.command(data-command="unGroup") 解组
-    .page(ref="page")
     .contextmenu(ref="contextmenu")
-      div.menu(data-status="node-selected")
+      .menu(data-status="node-selected")
         .command(data-command="copy")
-          span 复制
-          span copy
-    .itempannel(ref="itempannel")
-      div.getItem( data-shape="k-means" data-type="node" data-size="170*34")
-        button(className="panel-type-icon") K 均值聚类
-      div.getItem( data-shape="random-forest" data-type="node" data-size="170*34")
-        button(className="panel-type-icon") 随机森林
-      div.getItem( data-shape="PS-SMART" data-type="node" data-size="170*34")
-        button(className="panel-type-icon") PS-SMART 分类
-      div.getItem( data-shape="read-data-base" data-type="node" data-size="170*34")
-        button(className="panel-type-icon") 读数据表
-      div.getItem( data-shape="Bayes" data-type="node" data-size="170*34")
-        button(className="panel-type-icon") 朴素贝叶斯
+          button 复制
+        .command(data-command="delete")
+          button 删除
+      .menu(data-status="edge-selected")
+        .command(data-command="delete")
+          button 删除
+      .menu(data-status="group-selected")
+        .command(data-command="copy")
+          button 复制
+        .command(data-command="delete")
+          button 删除
+        .command(data-command="unGroup")
+          button 解组
+      .menu(data-status="canvas-selected")
+        .command(data-command="undo")
+          button 撤销
+        .command(data-command="redo")
+          button 重做
+        .command(data-command="pasteHere")
+          button 粘贴
+      .menu(data-status="multi-selected")
+        .command(data-command="copy")
+          button 复制
+        .command(data-command="pasteHere")
+          button 粘贴
+        .command(data-command="addGroup")
+          button 归组
+        .command(data-command="delete")
+          button 删除
+    .container
+      .itempannel(ref="itempannel")
+        .getItem( data-shape="k-means" data-type="node" data-size="170*34") K 均值聚类
+        .getItem( data-shape="random-forest" data-type="node" data-size="170*34") 随机森林
+        .getItem( data-shape="PS-SMART" data-type="node" data-size="170*34") PS-SMART 分类
+        .getItem( data-shape="read-data-base" data-type="node" data-size="170*34") 读数据表
+        .getItem( data-shape="Bayes" data-type="node" data-size="170*34") 朴素贝叶斯
+      .page(ref="page")
 
 </template>
 
@@ -264,65 +287,6 @@ Flow.registerNode(
 );
 
 export default {
-  data() {
-    return {
-      editor: {},
-      page: {},
-      toolbar:{},
-      contextmenu:{},
-      itempannel: {},
-      g6Data: {
-        nodes: [
-          {
-            id: "node1",
-            x: 100,
-            y: 200,
-            type: "node",
-            color: "#FA8C16",
-            label: "Start",
-            shape: "flow-rect",
-            schema: [
-              {
-                name: "String",
-                type: "String",
-                label: "Url",
-                default: "https://api.github.com/users/uu-z"
-              },
-              {
-                name: "data",
-                type: "JSON",
-                label: "JSON"
-              },
-              {
-                name: "Test",
-                type: "Callback",
-                label: "Test",
-                async callback({ node }) {
-                  let data = await axios.get(node.value.String);
-                  node.value.data = data;
-                }
-              }
-            ],
-            value: {}
-          },
-          {
-            id: "node2",
-            x: 300,
-            y: 200,
-            schema: [],
-            value: {}
-          }
-        ],
-        edges: [
-          {
-            id: "edge1",
-            target: "node2",
-            source: "node1"
-          }
-        ]
-      }
-    };
-  },
   mounted() {
     const editor = new G6Editor();
     const itempannel = new G6Editor.Itempannel({
@@ -343,8 +307,6 @@ export default {
     const contextmenu = new G6Editor.Contextmenu({
       container: this.$refs.contextmenu
     });
-    // let { editor, page, itempannel,toolbar,contextmenu } = this;
-
     editor.add(page);
     editor.add(itempannel);
     editor.add(contextmenu);
@@ -355,6 +317,19 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-#page
-  background #ccc
+.editor
+  user-select: none
+  -webkit-user-select: none
+  .contextmenu
+    display: none
+  .container
+    position: relative;
+    .itempannel 
+      position: absolute
+      .getItem
+        &:hover
+          cursor: move
+    .page
+      margin-left 150px
+      background #eee
 </style>
