@@ -1,7 +1,7 @@
 <template lang="pug">
   .home
     .menus
-      router-link.menu(v-for="menu in menus" :to="menu.to") {{menu.name}}
+      router-link.menu(v-for="menu in menus" :key="menu.name" :to="menu.to") {{menu.name}}
     router-view
 </template>
 
