@@ -53,7 +53,7 @@
           button 删除
     .container
       .itempannel(ref="itempannel")
-        .getItem( data-shape="Fetch" data-type="node" data-size="170*34") Test
+        .getItem( v-for="(item, key) in nodes" :data-shape="key" data-type="node" data-size="170*34") {{item.label}}
       .detailpannel(ref="detailpannel")
         .pannel(data-status="node-selected")
           .pannel-title 节点属性栏
@@ -76,6 +76,7 @@
 </template>
 
 <script>
+import _ from "lodash";
 import G6Editor from "@antv/g6-editor";
 
 const { Flow } = G6Editor;
@@ -156,6 +157,7 @@ const nodes = {
   },
   Fetch: {
     label: "Fetch",
+    extends: "model-card",
     color_type: "#1890FF",
     type_icon_url: "https://gw.alipayobjects.com/zos/rmsportal/czNEJAmyDpclFaSucYWB.svg",
     state_icon_url: "https://gw.alipayobjects.com/zos/rmsportal/MXXetJAxlqrbisIuZxDO.svg",
@@ -177,15 +179,49 @@ const nodes = {
       },
       {
         name: "Test",
+        label: "Fetch",
         type: "Callback",
-        label: "Test",
         async callback({ node }) {
           let data = await axios.get(node.model.Url);
           node.model.Out = data;
         }
       }
+    ]
+  },
+  Parse: {
+    label: "Parse",
+    extends: "model-card",
+    color_type: "#1890FF",
+    type_icon_url: "https://gw.alipayobjects.com/zos/rmsportal/czNEJAmyDpclFaSucYWB.svg",
+    state_icon_url: "https://gw.alipayobjects.com/zos/rmsportal/MXXetJAxlqrbisIuZxDO.svg",
+    anchor: [
+      [0.5, 0, { type: "input" }], // 上面边的中点
+      [0.5, 1, { type: "output" }] // 下边边的中点
     ],
-    extends: "model-card"
+    schema: [
+      {
+        name: "Out",
+        label: "Out",
+        type: "JSON"
+      },
+      {
+        name: "Parse",
+        label: "Parse",
+        type: "Callback",
+        async callback({ node }) {
+          const { model } = node.getInEdges()[0].source;
+          let Out = [];
+          _.each(model.Out, (k, v) => {
+            Out.push({
+              name: k,
+              type: _.upperFirst(typeof v),
+              default: v
+            });
+          });
+          node.model.Out = Out;
+        }
+      }
+    ]
   }
 };
 
@@ -196,6 +232,7 @@ _.each(nodes, (v, k) => {
 export default {
   data() {
     return {
+      nodes,
       curZoom: 1,
       minZoom: 0.5,
       maxZoom: 2,
@@ -283,6 +320,7 @@ export default {
         }
       });
       page.on("afteritemselected", ev => {
+        global.ev = ev.item;
         this.selectedItem = ev.item;
       });
       page.on("afterzoom", ev => {
