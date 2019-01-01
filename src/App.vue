@@ -7,11 +7,15 @@
 
 <script>
 import { request, mapVars, mapObjs } from "./utils";
+import {routes} from "./router"
 
 export default {
   data() {
     return {
-      menus: [{ name: "example", to: "example" }, { name: "g6", to: "g6" }, { name: "editor", to: "editor" }]
+      menus: routes.filter(i => !["/", "*"].includes(i.path)).map(i => ({
+        name: i.name,
+        to: i.name
+      }))
     };
   },
   computed: {

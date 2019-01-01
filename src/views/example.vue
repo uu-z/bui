@@ -78,9 +78,9 @@ export default {
             max: 100
           },
           {
-            name: "Bool",
-            type: "Bool",
-            label: "Bool",
+            name: "Boolean",
+            type: "Boolean",
+            label: "Boolean",
             default: true
           },
           {

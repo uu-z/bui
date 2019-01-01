@@ -1,8 +1,8 @@
 <template lang="pug">
-  .bool
+  .boolean
     label.field-label-text(v-if="showLabel" @click="$emit('click:label')") {{label || name}}
     input(
-      ref="Bool"
+      ref="Boolean"
       type="checkbox"
       :name="name"
       :checked="value"
@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  name: "Bool",
+  name: "Boolean",
   data() {
     return {
       open: false

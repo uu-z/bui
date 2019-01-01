@@ -38,7 +38,7 @@ export default {
         },
         {
           name: "default",
-          type: "Bool",
+          type: "Boolean",
           label: "Default",
           open: true,
           cType: this.value.cType

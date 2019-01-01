@@ -4,7 +4,6 @@
     "build": "cross-env NODE_ENV=prod poi build src/index.js"
   },
   "dependencies": {
-    "@antv/g6": "^2.2.6",
     "@antv/g6-editor": "^1.2.0",
     "@coreui/vue": "^2.0.2",
     "@types/p-queue": "^2.3.1",

@@ -59,8 +59,8 @@
           .pannel-title 节点属性栏
           .block-container
             Object(
-              v-if="selectedItem.shapeObj"
-              :schema.sync="selectedItem.shapeObj.schema",
+              v-if="selectedItem.model"
+              :schema.sync="selectedItem.model.schema",
               :value.sync="selectedItem.model"
               @event="Event($event, selectedItem)")
         .pannel(data-status="edge-selected") 边属性栏
@@ -80,6 +80,11 @@ import _ from "lodash";
 import G6Editor from "@antv/g6-editor";
 
 const { Flow } = G6Editor;
+
+const stateIcon = {
+  running: "https://gw.alipayobjects.com/zos/rmsportal/uZVdwjJGqDooqKLKtvGA.svg",
+  done: "https://gw.alipayobjects.com/zos/rmsportal/MXXetJAxlqrbisIuZxDO.svg"
+}
 
 const nodes = {
   "model-card": {
@@ -118,7 +123,7 @@ const nodes = {
       // 类型 logo
       group.addShape("image", {
         attrs: {
-          img: this.type_icon_url,
+          img: model.type_icon_url ? model.type_icon_url : this.type_icon_url,
           x: x + 16,
           y: y + 12,
           width: 20,
@@ -140,7 +145,7 @@ const nodes = {
       // 状态 logo
       group.addShape("image", {
         attrs: {
-          img: this.state_icon_url,
+          img:  model.state_icon_url ? model.state_icon_url : this.state_icon_url,
           x: x + 158,
           y: y + 12,
           width: 16,
@@ -160,7 +165,7 @@ const nodes = {
     extends: "model-card",
     color_type: "#1890FF",
     type_icon_url: "https://gw.alipayobjects.com/zos/rmsportal/czNEJAmyDpclFaSucYWB.svg",
-    state_icon_url: "https://gw.alipayobjects.com/zos/rmsportal/MXXetJAxlqrbisIuZxDO.svg",
+    state_icon_url: stateIcon.running,
     anchor: [
       [0.5, 0, { type: "input" }], // 上面边的中点
       [0.5, 1, { type: "output" }] // 下边边的中点
@@ -178,12 +183,13 @@ const nodes = {
         type: "JSON"
       },
       {
-        name: "Test",
+        name: "run",
         label: "Fetch",
         type: "Callback",
         async callback({ node }) {
           let data = await axios.get(node.model.Url);
           node.model.Out = data;
+          node.model.state_icon_url = stateIcon.done
         }
       }
     ]
@@ -193,7 +199,7 @@ const nodes = {
     extends: "model-card",
     color_type: "#1890FF",
     type_icon_url: "https://gw.alipayobjects.com/zos/rmsportal/czNEJAmyDpclFaSucYWB.svg",
-    state_icon_url: "https://gw.alipayobjects.com/zos/rmsportal/MXXetJAxlqrbisIuZxDO.svg",
+    state_icon_url: stateIcon.running,
     anchor: [
       [0.5, 0, { type: "input" }], // 上面边的中点
       [0.5, 1, { type: "output" }] // 下边边的中点
@@ -205,13 +211,13 @@ const nodes = {
         type: "JSON"
       },
       {
-        name: "Parse",
+        name: "run",
         label: "Parse",
         type: "Callback",
         async callback({ node }) {
           const { model } = node.getInEdges()[0].source;
           let Out = [];
-          _.each(model.Out, (k, v) => {
+          _.each(model.Out, (v, k) => {
             Out.push({
               name: k,
               type: _.upperFirst(typeof v),
@@ -219,6 +225,40 @@ const nodes = {
             });
           });
           node.model.Out = Out;
+        }
+      }
+    ]
+  },
+  Build: {
+    label: "Build",
+    extends: "model-card",
+    color_type: "#1890FF",
+    type_icon_url: "https://gw.alipayobjects.com/zos/rmsportal/czNEJAmyDpclFaSucYWB.svg",
+    state_icon_url: stateIcon.running,
+    anchor: [
+      [0.5, 0, { type: "input" }], // 上面边的中点
+      [0.5, 1, { type: "output" }] // 下边边的中点
+    ],
+    schema: [
+      {
+        name: "Object",
+        label: "Object",
+        type: "Object",
+        value: {},
+        schema: [
+          {
+            name: "test",
+            type: "String"
+          }
+        ]
+      },
+      {
+        name: "Build",
+        label: "Build",
+        type: "Callback",
+        async callback({ node }) {
+          const { model } = node.getInEdges()[0].source;
+          node.model.schema = model.Out;
         }
       }
     ]
@@ -242,7 +282,7 @@ export default {
           {
             name: "showGrid",
             label: "网格对齐",
-            type: "Bool"
+            type: "Boolean"
           }
         ],
         value: {}
@@ -290,10 +330,26 @@ export default {
     this.initPage();
   },
   methods: {
-    Event(data, node) {
+     async Event(data, node) {
+      const inputs = node.getInEdges().map(i => i.source)
+      const promises = inputs.map(i => {
+        const {callback} = i.model.schema.find(i => i.name =='run')
+        return this.runCallback(callback, i)
+
+      })
+      await Promise.all(promises)
+
       if (data.callback) {
         data.callback({ node });
+        this.runCallback(data.callback, node)
       }
+    },
+    async runCallback(callback, node){
+      node.model.state_icon_url = stateIcon.running
+      node.forceUpdate()
+      await callback({node})
+      node.model.state_icon_url = stateIcon.done      
+      node.forceUpdate()
     },
     initPage() {
       const { editor } = this;
@@ -320,8 +376,13 @@ export default {
         }
       });
       page.on("afteritemselected", ev => {
-        global.ev = ev.item;
         this.selectedItem = ev.item;
+        global.ev = ev.item
+        if (!this.selectedItem.model.schema) {
+          const {schema, type_icon_url} = ev.item.shapeObj
+          const {model} = this.selectedItem
+          model.schema = schema
+        }
       });
       page.on("afterzoom", ev => {
         this.curZoom = ev.updateMatrix[0];
