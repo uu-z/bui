@@ -1,24 +1,28 @@
 <template lang="pug">
   .editor
-    .toolbar(ref="toolbar")
-      button.command(data-command="undo" ) 撤销
-      button.command(data-command="redo" ) 重做
-      //- span.command(class="separator")
-      button.command(data-command="copy" ) 复制
-      button.command(data-command="paste" ) 粘贴
-      button.command(data-command="delete" ) 删除
-      //- span.command(class="separator")
-      button.command(data-command="zoomIn") 放大
-      button.command(data-command="zoomOut") 缩小
-      button.command(data-command="autoZoom" ) 适应画布
-      button.command(data-command="resetZoom" ) 实际尺寸
-      //- span.command(class="separator")
-      button.command(data-command="toBack" ) 层级后置
-      button.command(data-command="toFront" ) 层级前置
-      //- span.command(class="separator")
-      button.command(data-command="multiSelect" ) 多选
-      button.command(data-command="addGroup" ) 成组
-      button.command(data-command="unGroup") 解组
+    .toolbar
+      .action
+        button(@click="save") 保存
+      .command(ref="toolbar")
+        //- button.command(data-command="save") 保存
+        button.command(data-command="undo" ) 撤销
+        button.command(data-command="redo" ) 重做
+        //- span.command(class="separator")
+        button.command(data-command="copy" ) 复制
+        button.command(data-command="paste" ) 粘贴
+        button.command(data-command="delete" ) 删除
+        //- span.command(class="separator")
+        button.command(data-command="zoomIn") 放大
+        button.command(data-command="zoomOut") 缩小
+        button.command(data-command="autoZoom" ) 适应画布
+        button.command(data-command="resetZoom" ) 实际尺寸
+        //- span.command(class="separator")
+        button.command(data-command="toBack" ) 层级后置
+        button.command(data-command="toFront" ) 层级前置
+        //- span.command(class="separator")
+        button.command(data-command="multiSelect" ) 多选
+        button.command(data-command="addGroup" ) 成组
+        button.command(data-command="unGroup") 解组
     .contextmenu(ref="contextmenu")
       .menu(data-status="node-selected")
         .command(data-command="copy")
@@ -53,16 +57,16 @@
           button 删除
     .container
       .itempannel(ref="itempannel")
-        .getItem( v-for="(item, key) in nodes" :data-shape="key" data-type="node" data-size="170*34") {{item.label}}
+        .getItem(v-for="(item, key) in nodes" :data-shape="key" data-type="node" data-size="170*34") {{item.label}}
       .detailpannel(ref="detailpannel")
         .pannel(data-status="node-selected")
           .pannel-title 节点属性栏
           .block-container
             Object(
-              v-if="selectedItem.model"
-              :schema.sync="selectedItem.model.schema",
-              :value.sync="selectedItem.model"
-              @event="Event($event, selectedItem)")
+              v-if="selectedNode.model"
+              :schema.sync="selectedNode.model.schema",
+              :value.sync="selectedNode.model"
+              @event="Event($event, selectedNode)")
         .pannel(data-status="edge-selected") 边属性栏
         .pannel(data-status="group-selected") 群组属性栏
         .pannel(data-status="canvas-selected")
@@ -78,13 +82,14 @@
 <script>
 import _ from "lodash";
 import G6Editor from "@antv/g6-editor";
-
+import store2 from "store2";
 const { Flow } = G6Editor;
+import { EventEmitter } from "events";
 
 const stateIcon = {
   running: "https://gw.alipayobjects.com/zos/rmsportal/uZVdwjJGqDooqKLKtvGA.svg",
   done: "https://gw.alipayobjects.com/zos/rmsportal/MXXetJAxlqrbisIuZxDO.svg"
-}
+};
 
 const nodes = {
   "model-card": {
@@ -145,7 +150,7 @@ const nodes = {
       // 状态 logo
       group.addShape("image", {
         attrs: {
-          img:  model.state_icon_url ? model.state_icon_url : this.state_icon_url,
+          img: model.state_icon_url ? model.state_icon_url : this.state_icon_url,
           x: x + 158,
           y: y + 12,
           width: 16,
@@ -189,7 +194,7 @@ const nodes = {
         async callback({ node }) {
           let data = await axios.get(node.model.Url);
           node.model.Out = data;
-          node.model.state_icon_url = stateIcon.done
+          node.model.state_icon_url = stateIcon.done;
         }
       }
     ]
@@ -262,12 +267,30 @@ const nodes = {
         }
       }
     ]
+  },
+  LoadLocalStorage: {
+    label: "LoadLocalStorage",
+    extends: "model-card",
+    color_type: "#1890FF",
+    type_icon_url: "https://gw.alipayobjects.com/zos/rmsportal/czNEJAmyDpclFaSucYWB.svg",
+    state_icon_url: stateIcon.running,
+    anchor: [
+      [0.5, 0, { type: "input" }], // 上面边的中点
+      [0.5, 1, { type: "output" }] // 下边边的中点
+    ],
+    schema: [
+      {
+        name: "run",
+        label: "LoadLocalStorage",
+        type: "Callback",
+        async callback({ node, page }) {
+          const data = await store2.get("saveData");
+          page.read(data);
+        }
+      }
+    ]
   }
 };
-
-_.each(nodes, (v, k) => {
-  Flow.registerNode(k, v, v.extends);
-});
 
 export default {
   data() {
@@ -276,7 +299,7 @@ export default {
       curZoom: 1,
       minZoom: 0.5,
       maxZoom: 2,
-      selectedItem: {},
+      selectedNode: {},
       canvas: {
         schema: [
           {
@@ -302,6 +325,15 @@ export default {
     }
   },
   mounted() {
+    const { nodes } = this;
+    _.each(nodes, (v, k) => {
+      Flow.registerNode(k, v, v.extends);
+      _.each(v.schema, (sv, sk) => {
+        if (sv.callback) {
+          v[`${sv.name}`] = sv.callback;
+        }
+      });
+    });
     const editor = new G6Editor();
     this.editor = editor;
     const itempannel = new G6Editor.Itempannel({
@@ -329,27 +361,44 @@ export default {
     editor.add(page);
     this.initPage();
   },
+  computed: {
+    page() {
+      const editor = this.editor;
+      return editor.getCurrentPage();
+    }
+  },
   methods: {
-     async Event(data, node) {
-      const inputs = node.getInEdges().map(i => i.source)
-      const promises = inputs.map(i => {
-        const {callback} = i.model.schema.find(i => i.name =='run')
-        return this.runCallback(callback, i)
-
-      })
-      await Promise.all(promises)
-
-      if (data.callback) {
-        data.callback({ node });
-        this.runCallback(data.callback, node)
-      }
+    async save() {
+      const { page } = this;
+      const data = page.save();
+      await store2.add("saveData", data);
     },
-    async runCallback(callback, node){
-      node.model.state_icon_url = stateIcon.running
-      node.forceUpdate()
-      await callback({node})
-      node.model.state_icon_url = stateIcon.done      
-      node.forceUpdate()
+    async Event(data, node) {
+      const { page, editor } = this;
+
+      const inputs = node.getInEdges().map(i => i.source) || [];
+      if (inputs.length > 0) {
+        const promises = inputs.map(i => {
+          return this.runCallback({ data: { name: "run" }, node: i, page, editor });
+        });
+        await Promise.all(promises);
+      }
+      this.runCallback({ data, node, page, editor });
+    },
+    async runCallback(payload) {
+      const { node, data } = payload;
+      const {
+        shapeObj: { label: nodeLabel }
+      } = node;
+      const { name: callbackName } = data;
+      const callback = _.get(this.nodes, `${nodeLabel}.${callbackName}`);
+      if (callback) {
+        node.model.state_icon_url = stateIcon.running;
+        node.forceUpdate();
+        await callback(payload);
+        node.model.state_icon_url = stateIcon.done;
+        node.forceUpdate();
+      }
     },
     initPage() {
       const { editor } = this;
@@ -376,12 +425,12 @@ export default {
         }
       });
       page.on("afteritemselected", ev => {
-        this.selectedItem = ev.item;
-        global.ev = ev.item
-        if (!this.selectedItem.model.schema) {
-          const {schema, type_icon_url} = ev.item.shapeObj
-          const {model} = this.selectedItem
-          model.schema = schema
+        this.selectedNode = ev.item;
+        global.ev = ev.item;
+        if (!this.selectedNode.model.schema) {
+          const { schema, type_icon_url } = ev.item.shapeObj;
+          const { model } = this.selectedNode;
+          model.schema = schema;
         }
       });
       page.on("afterzoom", ev => {
@@ -400,6 +449,8 @@ export default {
   -webkit-user-select none
   canvas
     disply block
+  .toolbar
+    display flex
   .contextmenu
     display none
   .container
