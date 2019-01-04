@@ -1,14 +1,14 @@
 <template lang="pug">
   .enum
     label.field-label-text(v-if="showLabel" @click="$emit('click:label')") {{label || name}}
-    select(
+    Select(
+      size="small"
       :value="value"
-      @input="$emit('input', $event.target.value)"
-    )
-      option(:key=" ") {{" "}}
-      option(
+      @on-change="$emit('input', $event)")
+      Option(
         v-for="option in enums"
-        :key="option") {{option}}
+        :key="option"
+        :value="option") {{option}}
 </template>
 
 <script>
@@ -36,6 +36,9 @@ export default {
 </script>
 
 <style lang="stylus">
+.enum
+  display flex
+  align-items center
 </style>
 
 

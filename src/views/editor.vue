@@ -2,59 +2,59 @@
   .editor
     .toolbar
       .action
-        button(@click="save") 保存
+        Button(@click="save") 保存
       .command(ref="toolbar")
         //- button.command(data-command="save") 保存
-        button.command(data-command="undo" ) 撤销
-        button.command(data-command="redo" ) 重做
+        Button.command(data-command="undo" ) 撤销
+        Button.command(data-command="redo" ) 重做
         //- span.command(class="separator")
-        button.command(data-command="copy" ) 复制
-        button.command(data-command="paste" ) 粘贴
-        button.command(data-command="delete" ) 删除
+        Button.command(data-command="copy" ) 复制
+        Button.command(data-command="paste" ) 粘贴
+        Button.command(data-command="delete" ) 删除
         //- span.command(class="separator")
-        button.command(data-command="zoomIn") 放大
-        button.command(data-command="zoomOut") 缩小
-        button.command(data-command="autoZoom" ) 适应画布
-        button.command(data-command="resetZoom" ) 实际尺寸
+        Button.command(data-command="zoomIn") 放大
+        Button.command(data-command="zoomOut") 缩小
+        Button.command(data-command="autoZoom" ) 适应画布
+        Button.command(data-command="resetZoom" ) 实际尺寸
         //- span.command(class="separator")
-        button.command(data-command="toBack" ) 层级后置
-        button.command(data-command="toFront" ) 层级前置
+        Button.command(data-command="toBack" ) 层级后置
+        Button.command(data-command="toFront" ) 层级前置
         //- span.command(class="separator")
-        button.command(data-command="multiSelect" ) 多选
-        button.command(data-command="addGroup" ) 成组
-        button.command(data-command="unGroup") 解组
+        Button.command(data-command="multiSelect" ) 多选
+        Button.command(data-command="addGroup" ) 成组
+        Button.command(data-command="unGroup") 解组
     .contextmenu(ref="contextmenu")
       .menu(data-status="node-selected")
         .command(data-command="copy")
-          button 复制
+          Button 复制
         .command(data-command="delete")
-          button 删除
+          Button 删除
       .menu(data-status="edge-selected")
         .command(data-command="delete")
-          button 删除
+          Button 删除
       .menu(data-status="group-selected")
         .command(data-command="copy")
-          button 复制
+          Button 复制
         .command(data-command="delete")
-          button 删除
+          Button 删除
         .command(data-command="unGroup")
-          button 解组
+          Button 解组
       .menu(data-status="canvas-selected")
         .command(data-command="undo")
-          button 撤销
+          Button 撤销
         .command(data-command="redo")
-          button 重做
+          Button 重做
         .command(data-command="pasteHere")
-          button 粘贴
+          Button 粘贴
       .menu(data-status="multi-selected")
         .command(data-command="copy")
-          button 复制
+          Button 复制
         .command(data-command="pasteHere")
-          button 粘贴
+          Button 粘贴
         .command(data-command="addGroup")
-          button 归组
+          Button 归组
         .command(data-command="delete")
-          button 删除
+          Button 删除
     .container
       .itempannel(ref="itempannel")
         .getItem(v-for="(item, key) in nodes" :data-shape="key" data-type="node" data-size="170*34") {{item.label}}
@@ -83,214 +83,9 @@
 import _ from "lodash";
 import G6Editor from "@antv/g6-editor";
 import store2 from "store2";
+import * as nodes from "../nodes";
+import config from "../config";
 const { Flow } = G6Editor;
-import { EventEmitter } from "events";
-
-const stateIcon = {
-  running: "https://gw.alipayobjects.com/zos/rmsportal/uZVdwjJGqDooqKLKtvGA.svg",
-  done: "https://gw.alipayobjects.com/zos/rmsportal/MXXetJAxlqrbisIuZxDO.svg"
-};
-
-const nodes = {
-  "model-card": {
-    draw(item) {
-      const group = item.getGraphicGroup();
-      const model = item.getModel();
-      const width = 184;
-      const height = 40;
-      const x = -width / 2;
-      const y = -height / 2;
-      const borderRadius = 4;
-      const keyShape = group.addShape("rect", {
-        attrs: {
-          x,
-          y,
-          width,
-          height,
-          radius: borderRadius,
-          fill: "white",
-          stroke: "#CED4D9"
-        }
-      });
-      // 左侧色条
-      group.addShape("path", {
-        attrs: {
-          path: [
-            ["M", x, y + borderRadius],
-            ["L", x, y + height - borderRadius],
-            ["A", borderRadius, borderRadius, 0, 0, 0, x + borderRadius, y + height],
-            ["L", x + borderRadius, y],
-            ["A", borderRadius, borderRadius, 0, 0, 0, x, y + borderRadius]
-          ],
-          fill: this.color_type
-        }
-      });
-      // 类型 logo
-      group.addShape("image", {
-        attrs: {
-          img: model.type_icon_url ? model.type_icon_url : this.type_icon_url,
-          x: x + 16,
-          y: y + 12,
-          width: 20,
-          height: 16
-        }
-      });
-      // 名称文本
-      const label = model.label ? model.label : this.label;
-      group.addShape("text", {
-        attrs: {
-          text: label,
-          x: x + 52,
-          y: y + 13,
-          textAlign: "start",
-          textBaseline: "top",
-          fill: "rgba(0,0,0,0.65)"
-        }
-      });
-      // 状态 logo
-      group.addShape("image", {
-        attrs: {
-          img: model.state_icon_url ? model.state_icon_url : this.state_icon_url,
-          x: x + 158,
-          y: y + 12,
-          width: 16,
-          height: 16
-        }
-      });
-      return keyShape;
-    },
-    // 设置锚点
-    anchor: [
-      [0.5, 0], // 上面边的中点
-      [0.5, 1] // 下边边的中点
-    ]
-  },
-  Fetch: {
-    label: "Fetch",
-    extends: "model-card",
-    color_type: "#1890FF",
-    type_icon_url: "https://gw.alipayobjects.com/zos/rmsportal/czNEJAmyDpclFaSucYWB.svg",
-    state_icon_url: stateIcon.running,
-    anchor: [
-      [0.5, 0, { type: "input" }], // 上面边的中点
-      [0.5, 1, { type: "output" }] // 下边边的中点
-    ],
-    schema: [
-      {
-        name: "Url",
-        label: "Url",
-        type: "String",
-        default: "https://api.github.com/users/uu-z"
-      },
-      {
-        name: "Out",
-        label: "Out",
-        type: "JSON"
-      },
-      {
-        name: "run",
-        label: "Fetch",
-        type: "Callback",
-        async callback({ node }) {
-          let data = await axios.get(node.model.Url);
-          node.model.Out = data;
-          node.model.state_icon_url = stateIcon.done;
-        }
-      }
-    ]
-  },
-  Parse: {
-    label: "Parse",
-    extends: "model-card",
-    color_type: "#1890FF",
-    type_icon_url: "https://gw.alipayobjects.com/zos/rmsportal/czNEJAmyDpclFaSucYWB.svg",
-    state_icon_url: stateIcon.running,
-    anchor: [
-      [0.5, 0, { type: "input" }], // 上面边的中点
-      [0.5, 1, { type: "output" }] // 下边边的中点
-    ],
-    schema: [
-      {
-        name: "Out",
-        label: "Out",
-        type: "JSON"
-      },
-      {
-        name: "run",
-        label: "Parse",
-        type: "Callback",
-        async callback({ node }) {
-          const { model } = node.getInEdges()[0].source;
-          let Out = [];
-          _.each(model.Out, (v, k) => {
-            Out.push({
-              name: k,
-              type: _.upperFirst(typeof v),
-              default: v
-            });
-          });
-          node.model.Out = Out;
-        }
-      }
-    ]
-  },
-  Build: {
-    label: "Build",
-    extends: "model-card",
-    color_type: "#1890FF",
-    type_icon_url: "https://gw.alipayobjects.com/zos/rmsportal/czNEJAmyDpclFaSucYWB.svg",
-    state_icon_url: stateIcon.running,
-    anchor: [
-      [0.5, 0, { type: "input" }], // 上面边的中点
-      [0.5, 1, { type: "output" }] // 下边边的中点
-    ],
-    schema: [
-      {
-        name: "Object",
-        label: "Object",
-        type: "Object",
-        value: {},
-        schema: [
-          {
-            name: "test",
-            type: "String"
-          }
-        ]
-      },
-      {
-        name: "Build",
-        label: "Build",
-        type: "Callback",
-        async callback({ node }) {
-          const { model } = node.getInEdges()[0].source;
-          node.model.schema = model.Out;
-        }
-      }
-    ]
-  },
-  LoadLocalStorage: {
-    label: "LoadLocalStorage",
-    extends: "model-card",
-    color_type: "#1890FF",
-    type_icon_url: "https://gw.alipayobjects.com/zos/rmsportal/czNEJAmyDpclFaSucYWB.svg",
-    state_icon_url: stateIcon.running,
-    anchor: [
-      [0.5, 0, { type: "input" }], // 上面边的中点
-      [0.5, 1, { type: "output" }] // 下边边的中点
-    ],
-    schema: [
-      {
-        name: "run",
-        label: "LoadLocalStorage",
-        type: "Callback",
-        async callback({ node, page }) {
-          const data = await store2.get("saveData");
-          page.read(data);
-        }
-      }
-    ]
-  }
-};
 
 export default {
   data() {
@@ -393,11 +188,11 @@ export default {
       const { name: callbackName } = data;
       const callback = _.get(this.nodes, `${nodeLabel}.${callbackName}`);
       if (callback) {
-        node.model.state_icon_url = stateIcon.running;
-        node.forceUpdate();
+        node.model.state_icon_url = config.stateIcon.running;
+        node.update();
         await callback(payload);
-        node.model.state_icon_url = stateIcon.done;
-        node.forceUpdate();
+        node.model.state_icon_url = config.stateIcon.done;
+        node.update();
       }
     },
     initPage() {

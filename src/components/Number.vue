@@ -1,23 +1,23 @@
 <template lang="pug">
-  div
+  .number
     label.field-label-text(v-if="showLabel" @click="$emit('click:label')") {{label || name}}
-    input(
-      v-if="showRange"
-      type="range"
+    Slider(
+      v-if="showSlider"
+      size="small"
       :name="name"
       :value="value"
       :min="min"
       :max="max"
       :step="step"
-      @input="$emit('input', +$event.target.value)")
-    input(
-      type="number"
-      :name="name"
+      @on-input="$emit('input', +$event)")
+    InputNumber(
+      :value="value"
+      size="small"
       :min="min"
       :max="max"
       :step="step"
-      :value="value"
-      @input="$emit('input', $event.target.value)")
+      @on-change="$emit('input', +$event)")
+
 </template>
 
 <script>
@@ -32,7 +32,7 @@ export default {
     showLabel: {
       default: true
     },
-    showRange: {
+    showSlider: {
       default: true
     },
     min: {
@@ -52,3 +52,8 @@ export default {
 };
 </script>
 
+<style lang="stylus" scoped>
+.number
+  display flex
+  align-items center
+</style>

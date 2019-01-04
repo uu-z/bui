@@ -66,6 +66,7 @@ export default {
 .object-builder
   .field-container
     .object-fields
+      min-width 50px
       margin-left 10px
     .draggable-item
       position relative

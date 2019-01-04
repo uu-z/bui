@@ -1,25 +1,18 @@
 <template lang="pug">
   .boolean
     label.field-label-text(v-if="showLabel" @click="$emit('click:label')") {{label || name}}
-    input(
-      ref="Boolean"
-      type="checkbox"
+    Checkbox(
       :name="name"
-      :checked="value"
+      :value="value"
       :true-value="true"
       :false-value="false"
-      @input="$emit('input', $event.target.checked)"
+      @on-change="$emit('input', $event)"
       )
 </template>
 
 <script>
 export default {
   name: "Boolean",
-  data() {
-    return {
-      open: false
-    };
-  },
   mounted() {
     this.$emit("input", this.value);
   },

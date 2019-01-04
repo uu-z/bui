@@ -66,4 +66,5 @@ export default {
 <style lang="stylus">
 .object-fields
   margin-left 14px
+  min-width 200px
 </style>

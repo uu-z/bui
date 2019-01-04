@@ -9,10 +9,14 @@ import contentmenu from "v-contextmenu";
 import "v-contextmenu/dist/index.css";
 import draggable from "vuedraggable";
 
+const iView = require("iview")
+import 'iview/dist/styles/iview.css';
+
 if (process.env.NODE_ENV != "prod") {
   window.axios = axios;
 }
 const Plugins = {
+  iView,
   contentmenu
 };
 
@@ -40,3 +44,4 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount("#app");
+

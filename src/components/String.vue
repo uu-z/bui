@@ -3,12 +3,12 @@
     label.field-label-text(v-if="showLabel" @click="$emit('click:label')") {{label || name}}
     component(
       :is="vType"
-      type="text"
+      size="small"
       :name="name"
       :value="value"
       :disabled="disabled"
       :placeholder="placeholder"
-      @input="$emit('input', format ? format($event.target.value) : $event.target.value)")
+      @on-change="$emit('input', format ? format($event.target.value) : $event.target.value)")
 </template>
 
 <script>
@@ -23,7 +23,7 @@ export default {
     },
     type: {},
     vType: {
-      default: "input"
+      default: "Input"
     },
     label: {},
     name: {},
@@ -35,3 +35,10 @@ export default {
 };
 </script>
 
+
+
+<style lang="stylus">
+.string
+  display flex
+  align-items center
+</style>

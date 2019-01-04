@@ -5,23 +5,23 @@
         span.arrow(:class="{right: true, rotated: field.open}")
         label.field-label-text(v-if="showLabel" @click="$emit('click:label')") {{field.label || field.name}}
       .field-action
-        span.add(@click="add") {{' +'}}
+        Button.add(size="small" @click="add") +
     draggable.fieldList(
       v-if="field.open"
       v-model="_value"
       :options="dragOptions" )
-      .draggable-item(
-        v-for="(item, index) in value" :key="index")
+      .draggable-item(v-for="(item, index) in value" :key="index")
+        Icon.listIcon(size="12" type="md-list")
         .draggable-field
           component(
           :is="field.type"
           :value.sync="item"
           :showLabel="false"
-          :showRange="false"
+          :showSlider="false"
           :style="field.style"
           v-bind="field"
           @input="updateForm(index, $event)")
-        span.remove(@click="remove(index)")  -
+        Button.remove(size="small" @click="remove(index)")  -
 </template>
 
 <script>
@@ -94,10 +94,18 @@ export default {
       margin-left 0
   .fieldList
     margin-left 14px
-  .field-label-text
-    margin-left 14px
+  .listIcon
+    line-height 2
+    margin-right 2px
+    &:hover
+      cursor move
+  .field-label
+    >.field-label-text
+      margin-left 14px
   .draggable-item
     display flex
+    align-items center
+    margin 2px 0
   .remove
     margin-left 10px
 </style>

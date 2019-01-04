@@ -7,15 +7,17 @@
 
 <script>
 import { request, mapVars, mapObjs } from "./utils";
-import {routes} from "./router"
+import { routes } from "./router";
 
 export default {
   data() {
     return {
-      menus: routes.filter(i => !["/", "*"].includes(i.path)).map(i => ({
-        name: i.name,
-        to: i.name
-      }))
+      menus: routes
+        .filter(i => !["/", "*"].includes(i.path))
+        .map(i => ({
+          name: i.name,
+          to: i.name
+        }))
     };
   },
   computed: {
@@ -33,8 +35,9 @@ export default {
 .field
   display flex
   position relative
-  .field-label-text
-    margin-left 14px
+  justify-content space-between
+.field-label-text
+  min-width 40px
 .arrow
   display inline-block
   width 0
@@ -52,4 +55,6 @@ export default {
     border-left 6px solid #444
   &.rotated
     transform rotate(90deg)
+.ivu-slider
+  width 100%
 </style>
