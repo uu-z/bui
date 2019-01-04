@@ -39,20 +39,23 @@ export default {
         {
           name: "step",
           type: "String",
+          parseType: "Number",
           label: "Step",
-          default: "0"
+          default: 0
         },
         {
           name: "min",
           type: "String",
+          parseType: "Number",
           label: "Min",
-          default: "0"
+          default: 0
         },
         {
           name: "max",
           type: "String",
+          parseType: "Number",
           label: "Max",
-          default: "100"
+          default: 100
         },
         {
           name: "default",

@@ -1,14 +1,15 @@
 <template lang="pug">
   .string
     label.field-label-text(v-if="showLabel" @click="$emit('click:label')") {{label || name}}
-    component(
-      :is="vType"
+    Input(
+      :type="vType"
       size="small"
       :name="name"
-      :value="value"
+      :value="parseIn(value)"
+      clearable
       :disabled="disabled"
       :placeholder="placeholder"
-      @on-change="$emit('input', format ? format($event.target.value) : $event.target.value)")
+      @on-change="parseOut")
 </template>
 
 <script>
@@ -17,17 +18,39 @@ export default {
   props: {
     placeholder: {},
     disabled: {},
-    format: {},
     showLabel: {
       default: true
     },
     type: {},
+    parseType: {},
     vType: {
-      default: "Input"
+      default: "text"
     },
     label: {},
     name: {},
     value: {}
+  },
+  methods: {
+    parseIn(value) {
+      const { parseType } = this;
+      if (parseType == "Enum") {
+        return value.join(",");
+      } else if (parseType == "Number") {
+        return `${value}`;
+      } else {
+        return value;
+      }
+    },
+    parseOut($event) {
+      let value = $event.target.value;
+      const { parseType } = this;
+      if (parseType == "Enum") {
+        value = value.split(",");
+      } else if (parseType == "Number") {
+        value = +value;
+      }
+      this.$emit("input", value);
+    }
   },
   mounted() {
     this.$emit("input", this.value);

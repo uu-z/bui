@@ -40,7 +40,7 @@ export default {
           name: "enums",
           type: "String",
           label: "Enums",
-          format: v => v.split(",")
+          parseType: "Enum"
         },
         {
           name: "default",

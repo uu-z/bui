@@ -45,7 +45,7 @@ export default {
     },
     step: {
       type: [Number, String],
-      default: 0
+      default: 1
     },
     value: {}
   }
