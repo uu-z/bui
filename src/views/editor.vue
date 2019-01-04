@@ -40,12 +40,14 @@
         .command(data-command="unGroup")
           Button 解组
       .menu(data-status="canvas-selected")
-        .command(data-command="undo")
-          Button 撤销
-        .command(data-command="redo")
-          Button 重做
-        .command(data-command="pasteHere")
-          Button 粘贴
+        .itempannel(ref="itempannel")
+          Button.getItem(v-for="(item, key) in nodes" v-if="item.label" :data-shape="key" data-type="node" data-size="170*34") {{item.label}}
+        //- .command(data-command="undo")
+        //-   Button 撤销
+        //- .command(data-command="redo")
+        //-   Button 重做
+        //- .command(data-command="pasteHere")
+        //-   Button 粘贴
       .menu(data-status="multi-selected")
         .command(data-command="copy")
           Button 复制
@@ -56,8 +58,6 @@
         .command(data-command="delete")
           Button 删除
     .container
-      .itempannel(ref="itempannel")
-        .getItem(v-for="(item, key) in nodes" :data-shape="key" data-type="node" data-size="170*34") {{item.label}}
       .detailpannel(ref="detailpannel")
         .pannel(data-status="node-selected")
           .pannel-title 节点属性栏
@@ -231,6 +231,13 @@ export default {
       page.on("afterzoom", ev => {
         this.curZoom = ev.updateMatrix[0];
       });
+
+      const graph = page.getGraph();
+      graph.on("click", ev => {
+        if (ev.item == null) {
+          this.selectedNode = {};
+        }
+      });
     }
   }
 };
@@ -240,36 +247,32 @@ export default {
 .editor
   position relative
   width 100%
-  user-select none
-  -webkit-user-select none
   canvas
     disply block
   .toolbar
     display flex
+    border-bottom 1px solid #E6E9ED
   .contextmenu
     display none
-  .container
-    position relative
-    .itempannel
-      min-width 100px
-      height 100%
-      position absolute
-      background #F7F9FB
-      border-right 1px solid #E6E9ED
-      .getItem
-        &:hover
-          cursor move
-    .page
-      margin-left 150px
-      margin-right 300px
+  .itempannel
+    display flex
+    flex-direction column
+    user-select none
+    -webkit-user-select none
+    .getItem
+      &:hover
+        cursor move
+  .page
+    margin-right 25vw
   .detailpannel
     height 100%
     position absolute
     right 0px
     z-index 2
     background #F7F9FB
-    width 300px
+    width 25vw
     border-left 1px solid #E6E9ED
+    overflow auto
     .panel
       display none
 </style>

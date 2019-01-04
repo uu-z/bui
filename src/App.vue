@@ -37,7 +37,7 @@ export default {
   position relative
   justify-content space-between
 .field-label-text
-  min-width 40px
+  min-width 30px
 .arrow
   display inline-block
   width 0
