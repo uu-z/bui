@@ -59,4 +59,11 @@ export default {
   width 100%
 .ivu-tabs
   position unset !important
+  margin 4px 0
+  .ivu-tabs-content
+    margin-left 14px
+    .ivu-tabs-bar
+      zoom 0.5
+.ivu-tabs-bar
+  margin-bottom 4px !important
 </style>

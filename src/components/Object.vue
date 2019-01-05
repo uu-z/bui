@@ -5,7 +5,7 @@
       TabPane(
         v-for="(field, index) in Tabs"
         :key="field.name + field.type + field.cType "
-        :label="field.label || label.name")
+        :label="field.label || field.name")
         component(
           v-if="!['Array'].includes(field.cType)"
           :key="field.name + field.type + field.cType "
@@ -80,7 +80,7 @@ export default {
   computed: {
     Normal() {
       return this.schema.filter(i => {
-        return i.type !== "Object" || i.vType === "Normal";
+        return i.type !== "Object" || ["Normal", undefined].includes(i.vType);
       });
     },
     Tabs() {
