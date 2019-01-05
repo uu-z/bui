@@ -3,7 +3,11 @@
     pre.schema schema: {{example.schema}}
     ClassBuilder.builder(:object.sync="example")
     .data
-      Object(:key="key" :schema.sync="example.schema" :value.sync="example.value" @event="Event($event, example)")
+      Object(
+        :key="key"
+        :schema.sync="example.schema"
+        :value.sync="example.value"
+        @event="Event($event, example)")
       pre value: {{example.value}}
 </template>
 
@@ -30,11 +34,11 @@ export default {
         value: {},
         schema: [
           {
-            name: "Object",
+            name: "Object1",
+            label: "Object1",
             type: "Object",
             cType: "Variable",
             vType: "Tabs",
-            label: "Object",
             default: { Enum1: "Foo" },
             schema: [
               {
@@ -47,12 +51,22 @@ export default {
             ]
           },
           {
-            name: "Enum2",
-            type: "Enum",
-            cType: "Array",
-            label: "Enum",
-            default: ["Foo"],
-            enums: ["Foo", "Bar"]
+            name: "Object2",
+            label: "Object2",
+            type: "Object",
+            cType: "Variable",
+            vType: "Tabs",
+            default: { Enum1: "Foo" },
+            schema: [
+              {
+                name: "Enum2",
+                type: "Enum",
+                cType: "Array",
+                label: "Enum",
+                default: ["Foo"],
+                enums: ["Foo", "Bar"]
+              }
+            ]
           },
           {
             name: "String",
@@ -82,7 +96,7 @@ export default {
             name: "Boolean",
             type: "Boolean",
             label: "Boolean",
-            default: true
+            default: false
           },
           {
             name: "Avatar",

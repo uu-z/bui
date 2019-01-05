@@ -57,4 +57,6 @@ export default {
     transform rotate(90deg)
 .ivu-slider
   width 100%
+.ivu-tabs
+  position unset !important
 </style>

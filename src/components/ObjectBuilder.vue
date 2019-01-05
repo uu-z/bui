@@ -11,7 +11,7 @@ export default {
   name: "ObjectBuilder",
   props: ["value"],
   computed: {
-    ...mapVars(["types", "cTypes"]),
+    ...mapVars(["types", "cTypes", "vTypes"]),
     schema() {
       return [
         {
@@ -35,6 +35,12 @@ export default {
           type: "Enum",
           label: "cType",
           enums: this.cTypes
+        },
+        {
+          name: "vType",
+          type: "Enum",
+          label: "vType",
+          enums: this.vTypes
         },
         {
           name: "default",

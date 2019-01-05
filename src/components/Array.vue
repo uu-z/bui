@@ -88,7 +88,6 @@ export default {
 
 <style lang="stylus">
 .array
-  position relative
   .object[ctype='Array']
     >.object-fields
       margin-left 0

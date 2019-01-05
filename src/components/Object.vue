@@ -1,24 +1,48 @@
 <template lang="pug">
   .object
     label.field-label-text(v-if="showLabel" @click="$emit('click:label')") {{label || name}}
-    .object-fields(v-for="(field, index) in schema")
+    Tabs(type="line" :animated="false" size="small" v-if="Tabs.length > 0")
+      TabPane(
+        v-for="(field, index) in Tabs"
+        :key="field.name + field.type + field.cType "
+        :label="field.label || label.name")
+        component(
+          v-if="!['Array'].includes(field.cType)"
+          :key="field.name + field.type + field.cType "
+          :is="field.type"
+          :value="parseValue(field)"
+          :cType="field.cType || 'Variable'"
+          :style="field.style"
+          v-bind="field"
+          :showLabel="false"
+          :showTabs="false"
+          @input="updateValue(field.name, $event)"
+          @click="updateEvent(field, $event)")
+        Array(
+          v-if="field.cType=='Array'"
+          :key="field.name"
+          :field.sync="field"
+          :value.sync="value[field.name]"
+          :defaultVal="field.default"
+          @input="updateValue(field.name, $event)")
+    .object-fields(
+      v-for="(field, index) in Normal"
+      :key="field.name + field.type + field.cType ")
       component(
         v-if="!['Array'].includes(field.cType)"
-        :key="field.name + field.type + field.cType "
         :is="field.type"
-        :value.sync="value[field.name] || field.default"
+        :value="parseValue(field)"
         :cType="field.cType || 'Variable'"
         :style="field.style"
         v-bind="field"
-        @input="updateValue(index, field.name, $event)"
-        @click="updateEvent(index, $event)")
+        @input="updateValue(field.name, $event)"
+        @click="updateEvent(field, $event)")
       Array(
         v-if="field.cType=='Array'"
-        :key="field.name"
         :field.sync="field"
         :value.sync="value[field.name]"
         :defaultVal="field.default"
-        @input="updateValue(index, field.name, $event)")
+        @input="updateValue(field.name, $event)")
 </template>
 
 
@@ -38,6 +62,9 @@ export default {
     showLabel: {
       default: true
     },
+    showTabs: {
+      default: false
+    },
     schema: {
       type: [Object, Array],
       default() {
@@ -50,6 +77,18 @@ export default {
       }
     }
   },
+  computed: {
+    Normal() {
+      return this.schema.filter(i => {
+        return i.type !== "Object" || i.vType === "Normal";
+      });
+    },
+    Tabs() {
+      return this.schema.filter(i => {
+        return i.type === "Object" && i.vType === "Tabs";
+      });
+    }
+  },
   methods: {
     parseComponent(field) {
       if (field.cType == "Array") {
@@ -57,13 +96,19 @@ export default {
       }
       return field.type;
     },
-    updateValue(index, fieldname, value) {
+    updateValue(fieldname, value) {
       this.$set(this.value, fieldname, value);
       this.$emit("input", this.value);
     },
-    updateEvent(index) {
-      const field = this.schema[index];
+    updateEvent(field) {
       this.$emit("event", field);
+    },
+    parseValue(field) {
+      if (field.type !== "Object") {
+        return this.value[field.name] || field.default;
+      } else {
+        return this.value[field.name] || { ...field.default };
+      }
     }
   }
 };

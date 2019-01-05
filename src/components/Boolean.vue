@@ -6,8 +6,7 @@
       :value="value"
       :true-value="true"
       :false-value="false"
-      @on-change="$emit('input', $event)"
-      )
+      @on-change="$emit('input', $event)")
 </template>
 
 <script>
