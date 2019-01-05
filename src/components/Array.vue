@@ -104,7 +104,6 @@ export default {
       margin-left 14px
   .draggable-item
     display flex
-    align-items center
     margin 2px 0
   .remove
     margin-left 10px

@@ -32,9 +32,10 @@ export default {
           {
             name: "Object",
             type: "Object",
-            cType: "Array",
+            cType: "Variable",
+            vType: "Tabs",
             label: "Object",
-            default: [{ Enum1: "Foo" }],
+            default: { Enum1: "Foo" },
             schema: [
               {
                 name: "Enum1",
@@ -82,6 +83,12 @@ export default {
             type: "Boolean",
             label: "Boolean",
             default: true
+          },
+          {
+            name: "Avatar",
+            type: "Avatar",
+            label: "Avatar",
+            src: "https://avatars1.githubusercontent.com/u/12439992?v=4"
           },
           {
             name: "Reload",

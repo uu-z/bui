@@ -13,11 +13,11 @@
         @input="updateValue(index, field.name, $event)"
         @click="updateEvent(index, $event)")
       Array(
+        v-if="field.cType=='Array'"
         :key="field.name"
         :field.sync="field"
         :value.sync="value[field.name]"
         :defaultVal="field.default"
-        v-if="field.cType=='Array'"
         @input="updateValue(index, field.name, $event)")
 </template>
 
@@ -28,8 +28,13 @@ import _ from "lodash";
 export default {
   name: "Object",
   props: {
-    name: String,
-    label: String,
+    name: {},
+    label: {},
+    type: {},
+    cType: {},
+    vType: {
+      default: "Normal"
+    },
     showLabel: {
       default: true
     },
@@ -54,6 +59,7 @@ export default {
     },
     updateValue(index, fieldname, value) {
       this.$set(this.value, fieldname, value);
+      this.$emit("input", this.value);
     },
     updateEvent(index) {
       const field = this.schema[index];
@@ -64,7 +70,9 @@ export default {
 </script>
 
 <style lang="stylus">
+.object
+  >.object-fields
+    margin-left 14px
 .object-fields
-  margin-left 14px
   min-width 200px
 </style>
