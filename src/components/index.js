@@ -6,6 +6,7 @@ export { default as Boolean } from "./Boolean.vue";
 export { default as Object } from "./Object.vue";
 export { default as Array } from "./Array.vue";
 export { default as JSON } from "./JSON.vue";
+export { default as Class } from "./Class.vue";
 
 export { default as ClassBuilder } from "./ClassBuilder.vue";
 export { default as EnumBuilder } from "./EnumBuilder.vue";

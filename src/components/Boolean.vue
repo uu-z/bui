@@ -6,15 +6,12 @@
       :value="value"
       :true-value="true"
       :false-value="false"
-      @on-change="$emit('input', $event)")
+      @on-change="$emit('update:value', $event)")
 </template>
 
 <script>
 export default {
   name: "Boolean",
-  mounted() {
-    this.$emit("input", this.value);
-  },
   props: {
     name: {},
     label: {},

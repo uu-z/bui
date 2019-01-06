@@ -4,7 +4,7 @@
     Select(
       size="small"
       :value="value"
-      @on-change="$emit('input', $event)")
+      @on-change="$emit('update:value', $event)")
       Option(
         v-for="option in enums"
         :key="option"
@@ -28,9 +28,6 @@ export default {
     },
     label: {},
     value: {}
-  },
-  mounted() {
-    this.$emit("input", this.value);
   }
 };
 </script>

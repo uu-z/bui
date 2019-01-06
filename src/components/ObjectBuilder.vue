@@ -41,15 +41,15 @@ export default {
           type: "Enum",
           label: "vType",
           enums: this.vTypes
-        },
-        {
-          name: "default",
-          type: "Object",
-          label: "Default",
-          cType: this.value.cType,
-          schema: this.value.schema,
-          open: true
         }
+        // {
+        //   name: "default",
+        //   type: "Object",
+        //   label: "Default",
+        //   cType: this.value.cType,
+        //   schema: this.value.schema,
+        //   open: true
+        // }
       ];
     }
   }

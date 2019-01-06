@@ -32,8 +32,14 @@ export default {
         {
           name: "cType",
           type: "Enum",
-          label: "cType",
+          label: "CType",
           enums: this.cTypes
+        },
+        {
+          name: "vType",
+          type: "Enum",
+          label: "VType",
+          enums: ["text", "password", "textarea", "url", "email", "date"]
         },
         {
           name: "default",

@@ -1,48 +1,45 @@
 <template lang="pug">
   .object
-    label.field-label-text(v-if="showLabel" @click="$emit('click:label')") {{label || name}}
+    .field-label(@click="open = !open ")
+      span.arrow(v-if="showArrow" :class="{right: true, rotated: open}")
+      label.field-label-text(v-if="showLabel" @click="$emit('click:label')") {{label || name}}
     Tabs(type="line" :animated="false" size="small" v-if="Tabs.length > 0")
       TabPane(
         v-for="(field, index) in Tabs"
         :key="field.name + field.type + field.cType "
-        :label="field.label || field.name")
+        :label="field.label || field.name"
+        :name="field.label || field.name")
         component(
           v-if="!['Array'].includes(field.cType)"
-          :key="field.name + field.type + field.cType "
           :is="field.type"
-          :value="parseValue(field)"
-          :cType="field.cType || 'Variable'"
-          :style="field.style"
-          v-bind="field"
+          :value.sync="value"
+          v-bind.sync="field"
           :showLabel="false"
           :showTabs="false"
-          @input="updateValue(field.name, $event)"
           @click="updateEvent(field, $event)")
         Array(
           v-if="field.cType=='Array'"
           :key="field.name"
-          :field.sync="field"
-          :value.sync="value[field.name]"
-          :defaultVal="field.default"
-          @input="updateValue(field.name, $event)")
+          :schema.sync="field"
+          :value.sync="value"
+          :defaultVal="field.default")
     .object-fields(
+      v-if="open"
       v-for="(field, index) in Normal"
-      :key="field.name + field.type + field.cType ")
+      :key="name + field.name + field.type + field.cType ")
       component(
         v-if="!['Array'].includes(field.cType)"
         :is="field.type"
-        :value="parseValue(field)"
-        :cType="field.cType || 'Variable'"
-        :style="field.style"
+        :value.sync="field.schema ? value : value[field.name]"
+        :showArrow="field.schema"
         v-bind="field"
-        @input="updateValue(field.name, $event)"
+        @event="$emit('event', $event)"
         @click="updateEvent(field, $event)")
       Array(
         v-if="field.cType=='Array'"
-        :field.sync="field"
-        :value.sync="value[field.name]"
-        :defaultVal="field.default"
-        @input="updateValue(field.name, $event)")
+        :schema.sync="field"
+        :value.sync="field.schema ? value : value[field.name]"
+        :defaultVal="field.default")
 </template>
 
 
@@ -51,6 +48,11 @@ import _ from "lodash";
 
 export default {
   name: "Object",
+  data() {
+    return {
+      open: true
+    };
+  },
   props: {
     name: {},
     label: {},
@@ -65,8 +67,8 @@ export default {
     showTabs: {
       default: false
     },
+    showArrow: {},
     schema: {
-      type: [Object, Array],
       default() {
         return {};
       }
@@ -80,7 +82,7 @@ export default {
   computed: {
     Normal() {
       return this.schema.filter(i => {
-        return i.type !== "Object" || ["Normal", undefined].includes(i.vType);
+        return i.type !== "Object" || (i.vType === "Collapse" || !i.vType);
       });
     },
     Tabs() {
@@ -90,25 +92,10 @@ export default {
     }
   },
   methods: {
-    parseComponent(field) {
-      if (field.cType == "Array") {
-        return "Array";
-      }
-      return field.type;
-    },
-    updateValue(fieldname, value) {
-      this.$set(this.value, fieldname, value);
-      this.$emit("input", this.value);
-    },
     updateEvent(field) {
-      this.$emit("event", field);
-    },
-    parseValue(field) {
-      if (field.type !== "Object") {
-        return this.value[field.name] || field.default;
-      } else {
-        return this.value[field.name] || { ...field.default };
-      }
+      this.$emit("event", {
+        callback: field
+      });
     }
   }
 };
@@ -116,8 +103,13 @@ export default {
 
 <style lang="stylus">
 .object
+  .field-label
+    position relative
   >.object-fields
     margin-left 14px
+    .field-label-text
+      margin-left 14px
 .object-fields
   min-width 200px
+  min-height 25px
 </style>

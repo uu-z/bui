@@ -49,11 +49,8 @@ export default {
       } else if (parseType == "Number") {
         value = +value;
       }
-      this.$emit("input", value);
+      this.$emit("update:value", value);
     }
-  },
-  mounted() {
-    this.$emit("input", this.value);
   }
 };
 </script>

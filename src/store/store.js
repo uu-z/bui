@@ -9,7 +9,7 @@ const state = {
   ObjViewType: ["Tabs", "Collapsible", "Radio", "Block", "Simple"],
   types: ["Object", "String", "Enum", "Number", "Boolean", "Callback"],
   cTypes: ["Variable", "Array"],
-  vTypes: ["Normal", "Tabs"],
+  vTypes: ["Collapse", "Tabs"],
   defaultValue: {
     String: "",
     Enum: "",

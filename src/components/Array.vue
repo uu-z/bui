@@ -2,25 +2,24 @@
   .array
     .field
       .field-label(@click="handleOpen")
-        span.arrow(:class="{right: true, rotated: field.open}")
-        label.field-label-text(v-if="showLabel" @click="$emit('click:label')") {{field.label || field.name}}
+        span.arrow(:class="{right: true, rotated: schema.open}")
+        label.field-label-text(v-if="showLabel" @click="$emit('click:label')") {{schema.label || schema.name}}
       .field-action
         Button.add(size="small" @click="add") +
     draggable.fieldList(
-      v-if="field.open"
+      v-if="schema.open"
       v-model="_value"
       :options="dragOptions" )
       .draggable-item(v-for="(item, index) in value" :key="index")
         Icon.listIcon(size="12" type="md-list")
         .draggable-field
           component(
-          :is="field.type"
-          :value.sync="item"
+          :is="schema.type"
+          :value.sync="value[index]"
           :showLabel="false"
           :showSlider="false"
-          :style="field.style"
-          v-bind="field"
-          @input="updateForm(index, $event)")
+          :style="schema.style"
+          v-bind="schema")
         Button.remove(size="small" @click="remove(index)")  -
 </template>
 
@@ -39,7 +38,7 @@ export default {
     };
   },
   props: {
-    field: {},
+    schema: {},
     defaultVal: {
       default() {
         return [];
@@ -57,30 +56,21 @@ export default {
         return this.value;
       },
       set(val) {
-        this.$emit("input", val);
+        this.$emit("update:value", val);
       }
-    }
-  },
-  mounted() {
-    if (!Array.isArray(this.value)) {
-      this.$emit("input", [...this.defaultVal]);
     }
   },
   methods: {
     handleOpen() {
-      this.$set(this.field, "open", !this.field.open);
+      this.$set(this.schema, "open", !this.schema.open);
       this.$forceUpdate();
     },
     add() {
-      const value = _.get(this.defaultValue, this.field.type, {});
+      const value = _.get(this.defaultValue, this.schema.type, {});
       this.value.push(value);
     },
     remove(index) {
       this.$delete(this.value, index);
-    },
-    updateForm(index, value) {
-      this.$set(this.value, index, value);
-      this.$emit("input", this.value);
     }
   }
 };
@@ -89,9 +79,9 @@ export default {
 <style lang="stylus">
 .array
   .object[ctype='Array']
-    >.object-fields
+    >.object-schemas
       margin-left 0
-  .fieldList
+  .fieldList, .schemaList
     margin-left 14px
   .listIcon
     line-height 2

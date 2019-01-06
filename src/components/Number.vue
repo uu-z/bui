@@ -9,23 +9,20 @@
       :min="min"
       :max="max"
       :step="step"
-      @on-input="$emit('input', +$event)")
+      @on-input="$emit('update:value', +$event)")
     InputNumber(
       :value="value"
       size="small"
       :min="min"
       :max="max"
       :step="step"
-      @on-change="$emit('input', +$event)")
+      @on-change="$emit('update:value', +$event)")
 
 </template>
 
 <script>
 export default {
   name: "Number",
-  mounted() {
-    this.$emit("input", this.value);
-  },
   props: {
     label: String,
     name: String,

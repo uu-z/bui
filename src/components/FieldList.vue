@@ -1,19 +1,19 @@
 <template lang="pug">
   draggable.fieldList(
-    v-model="object.schema"
+    v-model="value"
     :options="dragOptions" )
     .draggable-item(
-      v-for="(item, index) in object.schema"
+      v-for="(item, index) in value"
       :key="item.name")
       .draggable-field(
-        @click="$emit('click:label',{index,field: item, parent: object.schema})"
-        @contextmenu.prevent="$emit('click:label',{index, field: item, parent: object.schema})")
+        @click="$emit('click:label',{index,field: item, parent: value})"
+        @contextmenu.prevent="$emit('click:label',{index, field: item, parent: value})")
         span.arrow(v-if="item.schema" :class="{right: true, rotated: open}" @click="open = !open")
         span.draggable-field-label {{item.name}}
-        Object(:schema="schema" :value.sync="item")
+        Object(:schema.sync="schema" :value.sync="item")
       FieldList.field-sublist(
         v-if="open && item.schema"
-        :object.sync="item"
+        :value.sync="item.schema"
         @click:label="$emit('click:label', $event)")
 </template>
 
@@ -23,7 +23,7 @@ import { request, mapVars, mapObjs } from "../utils";
 
 export default {
   name: "FieldList",
-  props: ["object"],
+  props: ["value"],
   data() {
     return {
       dragOptions: {

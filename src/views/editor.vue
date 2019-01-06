@@ -40,8 +40,10 @@
         .command(data-command="unGroup")
           Button 解组
       .menu(data-status="canvas-selected")
-        .itempannel(ref="itempannel")
-          Button.getItem(v-for="(item, key) in nodes" v-if="item.label" :data-shape="key" data-type="node" data-size="170*34") {{item.label}}
+        Card
+          .itempannel(ref="itempannel")
+            Input(v-model="itemFilter")
+            .getItem(v-for="(item, key) in nodes" v-if="item.label" :key="item.label" :data-shape="key" data-type="node" data-size="170*34") {{item.label}}
         //- .command(data-command="undo")
         //-   Button 撤销
         //- .command(data-command="redo")
@@ -62,7 +64,7 @@
         .pannel(data-status="node-selected")
           .pannel-title 节点属性栏
           .block-container
-            Object(
+            Class(
               v-if="selectedNode.model"
               :schema.sync="selectedNode.model.schema",
               :value.sync="selectedNode.model"
@@ -72,7 +74,7 @@
         .pannel(data-status="canvas-selected")
           .pannel-title 画布属性栏
           .block-container
-            Object(:schema.sync="canvas.schema", :value.sync="canvas.value")
+            Class(v-bind.sync="canvas")
         .panel(data-status="multi-selected") 多选时属性栏
       .page(ref="page")
 
@@ -95,6 +97,7 @@ export default {
       minZoom: 0.5,
       maxZoom: 2,
       selectedNode: {},
+      itemFilter: "",
       canvas: {
         schema: [
           {
@@ -168,7 +171,8 @@ export default {
       const data = page.save();
       await store2.add("saveData", data);
     },
-    async Event(data, node) {
+    async Event(event, node) {
+      const { callback: data } = event;
       const { page, editor } = this;
 
       const inputs = node.getInEdges().map(i => i.source) || [];

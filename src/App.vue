@@ -28,6 +28,9 @@ export default {
 </script>
 
 <style lang="stylus">
+*
+  margin 0
+  padding 0
 .menus
   display flex
   .menu
@@ -46,7 +49,7 @@ export default {
   margin-right 8px
   opacity 0.7
   position absolute
-  top 7px
+  top 5px
   left 0px
   transition transform 0.1s ease
   &.right
@@ -59,11 +62,12 @@ export default {
   width 100%
 .ivu-tabs
   position unset !important
-  margin 4px 0
   .ivu-tabs-content
-    margin-left 14px
     .ivu-tabs-bar
+      margin-left 28px
       zoom 0.5
+    .ivu-tabs-content
+      margin-left 14px
 .ivu-tabs-bar
   margin-bottom 4px !important
 </style>

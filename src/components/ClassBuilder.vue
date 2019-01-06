@@ -8,7 +8,7 @@
           v-contextmenu-item(@click="removeField") Remove
       FieldList.field-container(
         v-contextmenu:contextmenu
-        :object.sync="object"
+        :value.snyc="schema"
         @click:label="handleClickLabel")
       .field-detail(v-if="currentField")
         component(
@@ -22,7 +22,7 @@ import { request, mapVars, mapObjs } from "../utils";
 
 export default {
   name: "ClassBuilder",
-  props: ["object"],
+  props: ["schema", "value"],
   data() {
     return {
       currentField: null,
@@ -33,14 +33,6 @@ export default {
     };
   },
   computed: {
-    schema: {
-      get() {
-        return this.object.schema;
-      },
-      set(schema) {
-        this.$set(this.object, "schema", schema);
-      }
-    },
     ...mapVars(["types"])
   },
   methods: {
@@ -59,13 +51,15 @@ export default {
           ...schema,
           {
             name: `NewField${schema.length}`,
-            type: "String"
+            type: "String",
+            cType: "Variable"
           }
         ]);
       } else {
         parent.push({
           name: `NewField${parent.length}`,
-          type: "String"
+          type: "String",
+          cType: "Variable"
         });
       }
     },
@@ -78,6 +72,7 @@ export default {
           {
             name: `NewObject${schema.length}`,
             type: "Object",
+            cType: "Variable",
             schema: []
           }
         ]);
@@ -85,6 +80,7 @@ export default {
         parent.push({
           name: `NewObject${parent.length}`,
           type: "Object",
+          cType: "Variable",
           schema: []
         });
       }

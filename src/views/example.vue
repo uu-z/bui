@@ -1,12 +1,11 @@
 <template lang="pug">
   .example
     pre.schema schema: {{example.schema}}
-    ClassBuilder.builder(:object.sync="example")
+    ClassBuilder.builder(v-bind.sync="example")
     .data
-      Object(
+      Class(
         :key="key"
-        :schema.sync="example.schema"
-        :value.sync="example.value"
+        v-bind.sync="example"
         @event="Event($event, example)")
       pre value: {{example.value}}
 </template>
@@ -20,9 +19,11 @@ export default {
     ...mapVars(["types"])
   },
   methods: {
-    Event(data, node) {
-      if (data.callback) {
-        data.callback({ node });
+    Event(event, node) {
+      const { callback } = event;
+
+      if (callback) {
+        callback.callback({ node });
       }
     }
   },
@@ -47,6 +48,21 @@ export default {
                 label: "Enum",
                 default: "Foo",
                 enums: ["Foo", "Bar"]
+              },
+              {
+                name: "Float",
+                type: "Number",
+                label: "Float",
+                default: 23.33,
+                step: 0.01,
+                min: 0,
+                max: 100
+              },
+              {
+                name: "Boolean",
+                type: "Boolean",
+                label: "Boolean",
+                default: false
               }
             ]
           },
@@ -54,9 +70,8 @@ export default {
             name: "Object2",
             label: "Object2",
             type: "Object",
-            cType: "Variable",
             vType: "Tabs",
-            default: { Enum1: "Foo" },
+            cType: "Variable",
             schema: [
               {
                 name: "Enum2",
@@ -65,45 +80,30 @@ export default {
                 label: "Enum",
                 default: ["Foo"],
                 enums: ["Foo", "Bar"]
+              },
+              {
+                name: "String",
+                type: "String",
+                cType: "Array",
+                placeholder: "placeholder",
+                default: ["foo", "bar"],
+                label: "String"
+              },
+              {
+                name: "Int",
+                type: "Number",
+                cType: "Array",
+                label: "Int",
+                default: [0, 1, 2, 3]
               }
             ]
           },
-          {
-            name: "String",
-            type: "String",
-            cType: "Array",
-            placeholder: "placeholder",
-            default: ["foo", "bar"],
-            label: "String"
-          },
-          {
-            name: "Int",
-            type: "Number",
-            cType: "Array",
-            label: "Int",
-            default: [23]
-          },
-          {
-            name: "Float",
-            type: "Number",
-            label: "Float",
-            default: 23.33,
-            step: 0.01,
-            min: 0,
-            max: 100
-          },
-          {
-            name: "Boolean",
-            type: "Boolean",
-            label: "Boolean",
-            default: false
-          },
-          {
-            name: "Avatar",
-            type: "Avatar",
-            label: "Avatar",
-            src: "https://avatars1.githubusercontent.com/u/12439992?v=4"
-          },
+          // {
+          //   name: "Avatar",
+          //   type: "Avatar",
+          //   label: "Avatar",
+          //   src: "https://avatars1.githubusercontent.com/u/12439992?v=4"
+          // },
           {
             name: "Reload",
             type: "Callback",
