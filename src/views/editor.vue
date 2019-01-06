@@ -42,7 +42,7 @@
       .menu(data-status="canvas-selected")
         Card
           .itempannel(ref="itempannel")
-            Input(v-model="itemFilter")
+            Input(v-model="itemFilter" size="small")
             .getItem(v-for="(item, key) in nodes" v-if="item.label" :key="item.label" :data-shape="key" data-type="node" data-size="170*34") {{item.label}}
         //- .command(data-command="undo")
         //-   Button 撤销
@@ -62,17 +62,14 @@
     .container
       .detailpannel(ref="detailpannel")
         .pannel(data-status="node-selected")
-          .pannel-title 节点属性栏
-          .block-container
+          .block-container(v-if="selectedNode.model")
             Class(
-              v-if="selectedNode.model"
               :schema.sync="selectedNode.model.schema",
               :value.sync="selectedNode.model"
               @event="Event($event, selectedNode)")
         .pannel(data-status="edge-selected") 边属性栏
         .pannel(data-status="group-selected") 群组属性栏
         .pannel(data-status="canvas-selected")
-          .pannel-title 画布属性栏
           .block-container
             Class(v-bind.sync="canvas")
         .panel(data-status="multi-selected") 多选时属性栏
@@ -87,6 +84,7 @@ import G6Editor from "@antv/g6-editor";
 import store2 from "store2";
 import * as nodes from "../nodes";
 import config from "../config";
+import { aSet } from "menhera";
 const { Flow } = G6Editor;
 
 export default {
@@ -226,10 +224,18 @@ export default {
       page.on("afteritemselected", ev => {
         this.selectedNode = ev.item;
         global.ev = ev.item;
+        const {
+          model: { shape }
+        } = this.selectedNode;
+        const shapeCount = _.countBy(this.selectedNode.itemMap._nodes, node => {
+          return node.model.shape == shape;
+        });
+
         if (!this.selectedNode.model.schema) {
           const { schema, type_icon_url } = ev.item.shapeObj;
           const { model } = this.selectedNode;
           model.schema = schema;
+          model.label = `${model.shape}${shapeCount.true}`;
         }
       });
       page.on("afterzoom", ev => {
@@ -279,4 +285,7 @@ export default {
     overflow auto
     .panel
       display none
+  .node-header
+    display flex
+    align-items center
 </style>

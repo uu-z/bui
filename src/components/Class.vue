@@ -17,8 +17,9 @@ export default {
       const { value } = this;
       _.each(schema, (v, k) => {
         if (!v.schema) {
-          if (v[v.name]) throw Error(`schema name ${v.name} exists`);
-          this.$set(value, v.name, v.default || this.getDefault(v));
+          if (!value[v.name]) {
+            this.$set(value, v.name, v.default || this.getDefault(v));
+          }
         } else {
           this.initSchema(v.schema);
         }
