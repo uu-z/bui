@@ -3,7 +3,24 @@
     .field-label(@click="open = !open ")
       span.arrow(v-if="showArrow" :class="{right: true, rotated: open}")
       label.field-label-text(v-if="showLabel" @click="$emit('click:label')") {{label || name}}
-    Tabs(type="line" :animated="false" size="small" v-if="Tabs.length > 0")
+    .object-fields(
+      v-if="open"
+      v-for="(field, index) in Normal"
+      :key="name + field.name + field.type + field.cType ")
+      component(
+        v-if="!['Array'].includes(field.cType)"
+        :is="field.type"
+        :value.sync="field.schema ? value : value[field.name]"
+        :showArrow="field.schema"
+        v-bind="field"
+        @event="$emit('event', $event)"
+        @click="updateEvent(field, $event)")
+      Array(
+        v-if="field.cType=='Array'"
+        :schema.sync="field"
+        :value.sync="field.schema ? value : value[field.name]"
+        :defaultVal="field.default")
+    Tabs(type="card" :animated="false" size="small" v-if="Tabs.length > 0")
       TabPane(
         v-for="(field, index) in Tabs"
         :key="field.name + field.type + field.cType "
@@ -23,23 +40,6 @@
           :schema.sync="field"
           :value.sync="value"
           :defaultVal="field.default")
-    .object-fields(
-      v-if="open"
-      v-for="(field, index) in Normal"
-      :key="name + field.name + field.type + field.cType ")
-      component(
-        v-if="!['Array'].includes(field.cType)"
-        :is="field.type"
-        :value.sync="field.schema ? value : value[field.name]"
-        :showArrow="field.schema"
-        v-bind="field"
-        @event="$emit('event', $event)"
-        @click="updateEvent(field, $event)")
-      Array(
-        v-if="field.cType=='Array'"
-        :schema.sync="field"
-        :value.sync="field.schema ? value : value[field.name]"
-        :defaultVal="field.default")
 </template>
 
 
@@ -108,7 +108,8 @@ export default {
     >.field-label-text
       margin-left 14px
   >.object-fields
-    padding-left 14px
+    .field-label-text
+      margin-left 14px
 .object-fields
   width 100%
   min-width 200px

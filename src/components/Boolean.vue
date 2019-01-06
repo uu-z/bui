@@ -26,5 +26,5 @@ export default {
 
 <style lang="stylus" scoped>
 .boolean
-  padding-left 50px
+  padding-left 64px
 </style>

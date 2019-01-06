@@ -66,12 +66,13 @@ export default {
   position unset !important
   .ivu-tabs-tab
     padding 4px 8px !important
-  .ivu-tabs-content
-    .ivu-tabs-bar
-      margin-left 28px
-      zoom 0.5
-    .ivu-tabs-content
-      margin-left 14px
 .ivu-tabs-bar
   margin-bottom 4px !important
+.object > .ivu-tabs.ivu-tabs-card>.ivu-tabs-bar .ivu-tabs-nav-container
+  height 26px
+.object > .ivu-tabs.ivu-tabs-card>.ivu-tabs-bar .ivu-tabs-tab
+  border-radius 0
+  margin-right 0
+  font-size 12px
+  height 25px
 </style>

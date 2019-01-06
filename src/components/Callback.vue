@@ -1,6 +1,5 @@
 <template lang="pug">
-  div
-    Button(type="primary" @click="$emit('click')")  {{label || name}}
+  Button(type="primary" size="small" @click="$emit('click')")  {{label || name}}
 </template>
 
 <script>
