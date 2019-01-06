@@ -70,14 +70,14 @@ export const Base = {
     });
     return keyShape;
   }, // 设置锚点
-  anchor: [[0, 0.5], [1, 0.5]]
+  anchor: [[0.5, 0], [0.5, 1]]
 }; // 上面边的中点 // 下边边的中点
 
 export const Fetch = {
   label: "Fetch",
   extends: "Base",
   anchor: [
-    [1, 0.5, { type: "output" }] // 下边边的中点
+    [0.5, 1, { type: "output" }] // 下边边的中点
   ],
   schema: [
     {
@@ -112,8 +112,8 @@ export const Parse = {
   label: "Parse",
   extends: "Base",
   anchor: [
-    [0, 0.5, { type: "input" }], // 上面边的中点
-    [1, 0.5, { type: "output" }] // 下边边的中点
+    [0.5, 0, { type: "input" }], // 上面边的中点
+    [0.5, 1, { type: "output" }] // 下边边的中点
   ],
   schema: [
     {
@@ -155,8 +155,8 @@ export const LoadLocalStorage = {
   type_icon_url: "https://gw.alipayobjects.com/zos/rmsportal/czNEJAmyDpclFaSucYWB.svg",
   state_icon_url: config.stateIcon.running,
   anchor: [
-    [0, 0.5, { type: "input" }], // 上面边的中点
-    [1, 0.5, { type: "output" }] // 下边边的中点
+    [0.5, 0, { type: "input" }], // 上面边的中点
+    [0.5, 1, { type: "output" }] // 下边边的中点
   ],
   schema: [
     {

@@ -1,7 +1,14 @@
 <template lang="pug">
   .number
     label.field-label-text(v-if="showLabel" @click="$emit('click:label')") {{label || name}}
-    Slider(
+    InputNumber(
+      :value="value"
+      size="small"
+      :min="min"
+      :max="max"
+      :step="step"
+      @on-change="$emit('update:value', +$event)")
+    Slider.slider(
       v-if="showSlider"
       size="small"
       :name="name"
@@ -10,13 +17,6 @@
       :max="max"
       :step="step"
       @on-input="$emit('update:value', +$event)")
-    InputNumber(
-      :value="value"
-      size="small"
-      :min="min"
-      :max="max"
-      :step="step"
-      @on-change="$emit('update:value', +$event)")
 
 </template>
 
@@ -53,4 +53,6 @@ export default {
 .number
   display flex
   align-items center
+  .slider
+    margin-left 4px
 </style>

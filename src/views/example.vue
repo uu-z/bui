@@ -3,10 +3,11 @@
     pre.schema schema: {{example.schema}}
     ClassBuilder.builder(v-bind.sync="example")
     .data
-      Class(
-        :key="key"
-        v-bind.sync="example"
-        @event="Event($event, example)")
+      .card(style="width:400px")
+        Class(
+          :key="key"
+          v-bind.sync="example"
+          @event="Event($event, example)")
       pre value: {{example.value}}
 </template>
 

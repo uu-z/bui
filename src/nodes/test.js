@@ -5,8 +5,8 @@ export const Build = {
   type_icon_url: "https://gw.alipayobjects.com/zos/rmsportal/czNEJAmyDpclFaSucYWB.svg",
   state_icon_url: config.stateIcon.running,
   anchor: [
-    [0, 0.5, { type: "input" }], // 上面边的中点
-    [1, 0.5, { type: "output" }] // 下边边的中点
+    [0.5, 0, { type: "input" }], // 上面边的中点
+    [0.5, 1, { type: "output" }] // 下边边的中点
   ],
   schema: [
     {

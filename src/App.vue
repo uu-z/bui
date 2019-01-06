@@ -39,8 +39,6 @@ export default {
   display flex
   position relative
   justify-content space-between
-.field-label-text
-  min-width 30px
 .arrow
   display inline-block
   width 0
@@ -58,10 +56,16 @@ export default {
     border-left 6px solid #444
   &.rotated
     transform rotate(90deg)
+.field-label-text
+  min-width 50px
+.ivu-select
+  width auto !important
 .ivu-slider
   width 100%
 .ivu-tabs
   position unset !important
+  .ivu-tabs-tab
+    padding 4px 8px !important
   .ivu-tabs-content
     .ivu-tabs-bar
       margin-left 28px

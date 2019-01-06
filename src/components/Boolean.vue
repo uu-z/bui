@@ -1,12 +1,12 @@
 <template lang="pug">
   .boolean
-    label.field-label-text(v-if="showLabel" @click="$emit('click:label')") {{label || name}}
     Checkbox(
       :name="name"
       :value="value"
       :true-value="true"
       :false-value="false"
       @on-change="$emit('update:value', $event)")
+    label(v-if="showLabel" @click="$emit('click:label')") {{label || name}}
 </template>
 
 <script>
@@ -24,3 +24,7 @@ export default {
 };
 </script>
 
+<style lang="stylus" scoped>
+.boolean
+  padding-left 50px
+</style>

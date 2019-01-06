@@ -105,11 +105,12 @@ export default {
 .object
   .field-label
     position relative
-  >.object-fields
-    margin-left 14px
-    .field-label-text
+    >.field-label-text
       margin-left 14px
+  >.object-fields
+    padding-left 14px
 .object-fields
+  width 100%
   min-width 200px
   min-height 25px
 </style>
