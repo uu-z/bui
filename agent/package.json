@@ -1,0 +1,12 @@
+{
+  "name": "agent",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "koma": "^0.2.0",
+    "lodash": "^4.17.11",
+    "menhera": "^0.9.6"
+  }
+}
