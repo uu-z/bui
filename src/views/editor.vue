@@ -85,15 +85,23 @@ import store2 from "store2";
 import * as nodes from "../nodes";
 import config from "../config";
 import { aSet } from "menhera";
+import axios from "axios"
+import io from "socket.io-client"
 const { Flow } = G6Editor;
+
+
 
 export default {
   data() {
     return {
       nodes,
+      editor: null,
+      page: null,
       curZoom: 1,
       minZoom: 0.5,
       maxZoom: 2,
+      socket:{},
+      agent: "http://localhost:8001/",
       selectedNode: {},
       itemFilter: "",
       canvas: {
@@ -110,6 +118,9 @@ export default {
     };
   },
   watch: {
+    "nodes"(nodes){
+      this.initNodes()
+    },
     "canvas.value.showGrid"(val) {
       const editor = this.editor;
       const page = editor.getCurrentPage();
@@ -121,15 +132,6 @@ export default {
     }
   },
   mounted() {
-    const { nodes } = this;
-    _.each(nodes, (v, k) => {
-      Flow.registerNode(k, v, v.extends);
-      _.each(v.schema, (sv, sk) => {
-        if (sv.callback) {
-          v[`${sv.name}`] = sv.callback;
-        }
-      });
-    });
     const editor = new G6Editor();
     this.editor = editor;
     const itempannel = new G6Editor.Itempannel({
@@ -156,20 +158,49 @@ export default {
     editor.add(detailpannel);
     editor.add(page);
     this.initPage();
+    this.initNodes()
+    this.testAgent()
   },
   computed: {
-    page() {
-      const editor = this.editor;
-      return editor.getCurrentPage();
-    }
+    // page() {
+    //   const editor = this.editor;
+    //   return editor.getCurrentPage();
+    // }
   },
   methods: {
+    async initNodes(){
+      const {nodes}= this
+      _.each(nodes, (v, k) => {
+      Flow.registerNode(k, v, v.extends);
+      _.each(v.schema, (sv, sk) => {
+        if (sv.exec) {
+          v[`${sv.name}`] = sv.exec;
+        }
+      });
+    });
+    },
+    async testAgent(){
+      const socket = io(this.agent)
+      this.socket = socket
+      const {page} = this
+      socket.on("schema", data => {
+        this.nodes = {...this.nodes, ...data}
+      })
+      socket.on("result:Event", data => {
+        _.each(data, (v,k) => {
+          const node = page.find(k)
+          node.model = {...node.model, ...v}
+        })
+      })
+      socket.emit("get:schema")
+    },
     async save() {
       const { page } = this;
       const data = page.save();
       await store2.add("saveData", data);
     },
     async Event(event, node) {
+      console.log(event, node)
       const { callback: data } = event;
       const { page, editor } = this;
 
@@ -187,20 +218,30 @@ export default {
       const {
         shapeObj: { label: nodeLabel }
       } = node;
-      const { name: callbackName } = data;
-      const callback = _.get(this.nodes, `${nodeLabel}.${callbackName}`);
-      if (callback) {
-        node.model.state_icon_url = config.stateIcon.running;
-        node.update();
-        await callback(payload);
-        node.model.state_icon_url = config.stateIcon.done;
-        node.update();
+
+      if(data.type == "Callback") {
+        const { name: callbackName } = data;
+        const callback = _.get(this.nodes, `${nodeLabel}.${callbackName}`);
+        if (callback) {
+          node.model.state_icon_url = config.stateIcon.running;
+          node.update();
+          await callback(payload);
+          node.model.state_icon_url = config.stateIcon.done;
+          node.update();
+        }
+      } else if(data.type=='Event'){
+        const {label, name} = data
+        this.socket.emit("exec:Event", {
+          [`${label}.${name}`]: node.model
+        })
       }
     },
     initPage() {
       const { editor } = this;
-      const page = editor.getCurrentPage();
 
+      const page = editor.getCurrentPage();
+      this.page = page
+      global.page = page
       // 输入锚点不可以连出边
       page.on("hoveranchor:beforeaddedge", ev => {
         if (ev.anchor.type === "input") {
