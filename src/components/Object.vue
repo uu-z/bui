@@ -106,10 +106,12 @@ export default {
   .field-label
     position relative
     >.field-label-text
-      margin-left 14px
+      margin-right 14px
+      text-align right
   >.object-fields
     .field-label-text
-      margin-left 14px
+      margin-right 14px
+      text-align right
 .object-fields
   width 100%
   min-width 200px
